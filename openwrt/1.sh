@@ -382,4 +382,3 @@ if [ "$BUILD" = "n" ]; then
 else
     make defconfig
 fi
-
