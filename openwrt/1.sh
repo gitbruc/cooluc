@@ -357,7 +357,7 @@ fi
 # Toolchain Cache
 if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
-    [ "$isCN" = "CN" ] && github_proxy="ghp.ci/" || github_proxy=""
+    [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
     PLATFORM_ID=""
     [ -f /etc/os-release ] && source /etc/os-release
