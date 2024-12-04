@@ -94,6 +94,7 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS
+CONFIG_PACKAGE_tailscale=y
 CONFIG_PACKAGE_luci-app-onliner=y
 CONFIG_PACKAGE_luci-app-wol=y
 # CONFIG_GRUB_IMAGES is not set
