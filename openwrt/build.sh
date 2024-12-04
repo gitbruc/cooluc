@@ -30,9 +30,9 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 
 # script url
 if [ "$isCN" = "CN" ]; then
-    export mirror=raw.githubusercontent.com/gitbruc/cooluc/master
+    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
 else
-    export mirror=raw.githubusercontent.com/gitbruc/cooluc/master
+    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
 fi
 
 # github actions - caddy server
@@ -89,7 +89,7 @@ if [ "$1" = "dev" ]; then
     export branch=openwrt-24.10
     export version=dev
 elif [ "$1" = "rc2" ]; then
-    latest_release="v$(curl -sL $mirror/tags/v24)"
+    latest_release="v$(curl -s $mirror/tags/v24)"
     export branch=$latest_release
     export version=rc2
 fi
