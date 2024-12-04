@@ -9,4 +9,6 @@ git clone https://github.com/tty228/luci-app-wechatpush.git package/new/luci-app
 #passwall
 rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
 git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
+# autotimeset
+git clone https://github.com/sirpdboy/luci-app-autotimeset.git package/new/luci-app-autotimeset
 # 自定义脚本
