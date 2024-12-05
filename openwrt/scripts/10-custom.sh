@@ -11,6 +11,8 @@ rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
 git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
 # autotimeset
 git clone https://github.com/sirpdboy/luci-app-autotimeset.git package/new/luci-app-autotimeset
+# control
+git clone https://github.com/gitbruc/openwrt-control.git package/new/control
 # change luci
 perl -pi -e "s/hostname='OpenWrt'/hostname='XiaomanWrt'/g" package/base-files/files/bin/config_generate
 awk -v new_text="$(cat insert.js)" '/return table;/ {print new_text; print $0; next}1' feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js > temp.js && mv temp.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
