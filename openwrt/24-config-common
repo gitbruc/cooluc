@@ -94,6 +94,13 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
+CONFIG_PACKAGE_luci-app-control-timewol=y
+CONFIG_PACKAGE_luci-app-control-webrestriction=y
+CONFIG_PACKAGE_luci-app-control-weburl=y
+CONFIG_PACKAGE_luci-app-timecontrol=y
+CONFIG_PACKAGE_luci-app-mwan3=y
+CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
+CONFIG_PACKAGE_mwan3=y
 CONFIG_GRUB_TIMEOUT="1"
 CONFIG_GRUB_TITLE="XiaomanWrt"
 CONFIG_PACKAGE_luci-app-autotimeset=y
