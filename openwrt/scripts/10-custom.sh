@@ -25,6 +25,6 @@ sed -i 's|"admin", "services"|"admin", "control"|g' "feeds/luci/applications/luc
 sed -i 's/admin\/services/admin\/nas/' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
 # change luci
 perl -pi -e "s/hostname='OpenWrt'/hostname='XiaomanWrt'/g" package/base-files/files/bin/config_generate
-awk -v new_text="$(cat insert.js)" '/return table;/ {print new_text; print $0; next}1' feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js > temp.js && mv temp.js feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+node insert.js
 mv 1.png package/new/luci-theme-argon/luci-theme-argon/htdocs/luci-static/argon/background/
 # 自定义脚本
