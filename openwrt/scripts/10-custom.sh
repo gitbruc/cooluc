@@ -11,8 +11,6 @@ rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
 git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
 # autotimeset
 git clone https://github.com/sirpdboy/luci-app-autotimeset.git package/new/luci-app-autotimeset
-# control
-git clone https://github.com/gitbruc/openwrt-control.git package/new/control
 # control-watchcat
 sed -i 's/admin\/services/admin\/control/' "feeds/luci/applications/luci-app-watchcat/root/usr/share/luci/menu.d/luci-app-watchcat.json"
 # control-wol

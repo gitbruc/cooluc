@@ -94,14 +94,6 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
-CONFIG_PACKAGE_luci-app-control-timewol=y
-CONFIG_PACKAGE_luci-app-control-webrestriction=y
-CONFIG_PACKAGE_luci-app-control-weburl=y
-CONFIG_PACKAGE_luci-app-timecontrol=y
-CONFIG_PACKAGE_luci-i18n-control-timewol-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-control-webrestriction-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-control-weburl-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-timecontrol-zh-cn=y
 CONFIG_PACKAGE_luci-app-mwan3=y
 CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
 CONFIG_PACKAGE_mwan3=y
