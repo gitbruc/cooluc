@@ -45,9 +45,7 @@ export gitea=git.cooluc.com
 
 # github mirror
 if [ "$isCN" = "CN" ]; then
-<<<<<<< HEAD
     export github="github.com"
->>>>>>> upstream/master
 else
     export github="github.com"
 fi
