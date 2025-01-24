@@ -93,7 +93,7 @@ jobs:
       uses: sbwml/actions@openwrt-build-setup
 
     - name: Install LLVM
-      uses: sbwml/actions@install-llvm
+      uses: sbwml/actions@install-llvm-20
 
     - name: Restore Cached
       if: ${{ github.event.inputs.ccache == 'true' && github.event.inputs.device != 'armv8' && github.event.inputs.device != 'nanopi-r4s' }}
@@ -137,7 +137,7 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd openwrt
-        make V=s
+        make V=s IGNORE_ERRORS="n m"
 
     - name: Delete Cached
       if: ${{ github.event.inputs.ccache == 'true' && github.event.inputs.device != 'armv8' && github.event.inputs.device != 'nanopi-r4s' }}
