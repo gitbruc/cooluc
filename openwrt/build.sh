@@ -234,6 +234,7 @@ curl -sO $mirror/openwrt/scripts/05-fix-source.sh
 curl -sO $mirror/openwrt/scripts/99_clean_build_cache.sh
 curl -sO $mirror/openwrt/scripts/insert.js
 curl -sO $mirror/openwrt/scripts/1.png
+
 if [ -n "$git_password" ] && [ -n "$private_url" ]; then
     curl -u openwrt:$git_password -sO "$private_url"
 else
@@ -402,7 +403,8 @@ else
     echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
-    make -j$(nproc) V=w IGNORE_ERRORS="n m"
+    make -j$cores V=w IGNORE_ERRORS="n m"
+    make package/network/utils/xdp-tools V=s || true
 fi
 
 # Compile time
