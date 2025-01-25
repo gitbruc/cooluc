@@ -46,12 +46,6 @@ jobs:
         shell: bash
 
     steps:
-    - name: Checkout
-      continue-on-error: true
-      uses: actions/checkout@main
-      with:
-        path: r4s_build_script
-
     - name: Setup variables
       run: |
         sudo timedatectl set-timezone 'Asia/Shanghai'
@@ -113,7 +107,7 @@ jobs:
       run: |
         export ${{ github.event.inputs.build_options }} LAN=${{ github.event.inputs.lan_addr }} USE_GCC15=y
         [ ${{ github.event.inputs.ccache }} = 'true' ] && export ENABLE_CCACHE=y
-        bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/master/build.sh) ${{ env.build_version }} ${{ github.event.inputs.device }}
+        bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/master/build.sh) ${{ env.build_version }} ${{ github.event.inputs.device }}
         cd openwrt
         if [ "${{ github.event.inputs.version }}" = release ]; then
           tags=OpenWrt-$(git describe --abbrev=0 --tags)
