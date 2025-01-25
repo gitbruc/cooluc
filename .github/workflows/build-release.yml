@@ -108,7 +108,6 @@ jobs:
         export ${{ github.event.inputs.build_options }} LAN=${{ github.event.inputs.lan_addr }} USE_GCC15=y
         [ ${{ github.event.inputs.ccache }} = 'true' ] && export ENABLE_CCACHE=y
         bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/master/openwrt/build.sh) ${{ env.build_version }} ${{ github.event.inputs.device }}
-        cd openwrt
         if [ "${{ github.event.inputs.version }}" = release ]; then
           tags=OpenWrt-$(git describe --abbrev=0 --tags)
         else
