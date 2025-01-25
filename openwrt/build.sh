@@ -37,7 +37,7 @@ fi
 
 # github actions - caddy server
 if [ "$(whoami)" = "runner" ] && [ -z "$git_password" ]; then
-    export mirror=http://127.0.0.1:8080
+    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
 fi
 
 # private gitea
