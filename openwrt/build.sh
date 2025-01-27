@@ -36,9 +36,9 @@ else
 fi
 
 # github actions - caddy server
-#if [ "$(whoami)" = "runner" ] && [ -z "$git_password" ]; then
-#    export mirror=http://127.0.0.1:8080
-#fi
+if [ "$(whoami)" = "runner" ] && [ -z "$git_password" ]; then
+    export mirror=http://127.0.0.1:8080
+fi
 
 # private gitea
 export gitea=git.cooluc.com
@@ -369,7 +369,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     PLATFORM_ID=""
     [ -f /etc/os-release ] && source /etc/os-release
     if [ "$PLATFORM_ID" = "platform:el9" ]; then
-        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
+        TOOLCHAIN_URL="http://127.0.0.1:8080"
     else
         TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
     fi
