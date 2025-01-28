@@ -28,7 +28,7 @@ endgroup() {
 ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
-# script url
+## script url
 if [ "$isCN" = "CN" ]; then
     export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
 else
