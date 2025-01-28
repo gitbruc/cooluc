@@ -30,9 +30,9 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 
 # script url
 if [ "$isCN" = "CN" ]; then
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
+    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
 else
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/master
+    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
 fi
 
 # github actions - caddy server
@@ -347,6 +347,9 @@ echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 
 # not all kmod
 [ "$NO_KMOD" = "y" ] && sed -i '/CONFIG_ALL_KMODS=y/d; /CONFIG_ALL_NONSHARED=y/d' .config
+
+# build wwan pkgs for openwrt_core
+# [ "$OPENWRT_CORE" = "y" ] && curl -s $mirror/openwrt/generic/config-wwan >> .config
 
 # ccache
 if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
