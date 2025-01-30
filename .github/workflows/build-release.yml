@@ -45,6 +45,7 @@ jobs:
       run:
         shell: bash
 
+    steps:    
     - name: Setup variables
       run: |
         sudo timedatectl set-timezone 'Asia/Shanghai'
