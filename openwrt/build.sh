@@ -393,7 +393,6 @@ else
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
     make -j1 V=s
-    make package/network/utils/xdp-tools V=s || true
 fi
 
 # Compile time
