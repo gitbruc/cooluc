@@ -132,7 +132,7 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd openwrt
-        make V=s
+        make -j1 V=s
     - name: Delete Cached
       if: ${{ github.event.inputs.ccache == 'true' && github.event.inputs.device != 'armv8' && github.event.inputs.device != 'nanopi-r4s' }}
       continue-on-error: true
