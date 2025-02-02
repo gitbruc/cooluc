@@ -30,7 +30,7 @@ rm -rf tools/dwarves
 git clone https://$github/sbwml/tools_dwarves tools/dwarves
 
 # x86 - disable mitigations
-sed -i 's/noinitrd/noinitrd mitigations=off/g' target/linux/x86/image/grub-efi.cfg
+#sed -i 's/noinitrd/noinitrd mitigations=off/g' target/linux/x86/image/grub-efi.cfg
 
 # default LAN IP
 sed -i "s/192.168.1.1/$LAN/g" package/base-files/files/bin/config_generate
@@ -287,7 +287,7 @@ pushd feeds/luci
 popd
 
 # Luci diagnostics.js
-sed -i "s/openwrt.org/www.qq.com/g" feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/diagnostics.js
+#sed -i "s/openwrt.org/www.qq.com/g" feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/diagnostics.js
 
 # luci - disable wireless WPA3
 [ "$platform" = "bcm53xx" ] && sed -i -e '/if (has_ap_sae || has_sta_sae) {/{N;N;N;N;d;}' feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/wireless.js
