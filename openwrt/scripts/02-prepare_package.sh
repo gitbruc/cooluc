@@ -2,14 +2,14 @@
 
 # golang 1.23
 #rm -rf feeds/packages/lang/golang
-#git clone https://$github/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
+git clone https://$github/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
 # node - prebuilt
 #rm -rf feeds/packages/lang/node
-#git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
+git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
 
 # default settings
-#git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-24.10
+git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-24.10
 
 # wwan
 git clone https://github.com/sbwml/wwan-packages package/new/wwan
@@ -98,7 +98,7 @@ git clone https://github.com/sbwml/package_new_nethogs package/new/nethogs
 
 # SSRP & Passwall
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-git clone https://$github/sbwml/openwrt_helloworld package/new/helloworld -b v5
+git clone https://$github/gitbruc/openwrt_helloworld package/new/helloworld -b v5
 
 # alist
 rm -rf feeds/packages/net/alist feeds/luci/applications/luci-app-alist
