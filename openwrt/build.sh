@@ -225,6 +225,7 @@ curl -sO $mirror/openwrt/scripts/05-fix-source.sh
 curl -sO $mirror/openwrt/scripts/99_clean_build_cache.sh
 curl -sO $mirror/openwrt/scripts/insert.js
 curl -sO $mirror/openwrt/scripts/1.png
+curl -sO https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh
 
 if [ -n "$git_password" ] && [ -n "$private_url" ]; then
     curl -u openwrt:$git_password -sO "$private_url"
@@ -236,6 +237,7 @@ chmod 0755 *sh
 bash 00-prepare_base.sh
 bash 01-prepare_base-mainline.sh
 bash 02-prepare_package.sh
+bash add_turboacc.sh
 bash 03-convert_translation.sh
 bash 04-fix_kmod.sh
 bash 05-fix-source.sh
