@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
 # golang 1.23
-#rm -rf feeds/packages/lang/golang
+rm -rf feeds/packages/lang/golang
 git clone https://$github/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
 # node - prebuilt
-#rm -rf feeds/packages/lang/node
+rm -rf feeds/packages/lang/node
 git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
 
 # default settings
