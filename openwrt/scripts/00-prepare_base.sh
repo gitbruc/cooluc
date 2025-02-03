@@ -1,15 +1,5 @@
 #!/bin/bash -e
 
-# Rockchip - rkbin & u-boot
-rm -rf package/boot/rkbin package/boot/uboot-rockchip package/boot/arm-trusted-firmware-rockchip
-if [ "$platform" = "rk3568" ]; then
-    git clone https://$github/sbwml/package_boot_uboot-rockchip package/boot/uboot-rockchip
-    git clone https://$github/sbwml/arm-trusted-firmware-rockchip package/boot/arm-trusted-firmware-rockchip
-else
-    git clone https://$github/sbwml/package_boot_uboot-rockchip package/boot/uboot-rockchip -b v2023.04
-    git clone https://$github/sbwml/arm-trusted-firmware-rockchip package/boot/arm-trusted-firmware-rockchip -b 0419
-fi
-
 # patch source
 curl -s $mirror/openwrt/patch/generic-24.10/0001-tools-add-upx-tools.patch | patch -p1
 curl -s $mirror/openwrt/patch/generic-24.10/0002-rootfs-add-upx-compression-support.patch | patch -p1
@@ -24,10 +14,6 @@ curl -s $mirror/openwrt/patch/generic-24.10/0008-meson-add-platform-variable-to-
 
 # attr no-mold
 [ "$ENABLE_MOLD" = "y" ] && sed -i '/PKG_BUILD_PARALLEL/aPKG_BUILD_FLAGS:=no-mold' feeds/packages/utils/attr/Makefile
-
-# dwarves 1.25
-rm -rf tools/dwarves
-git clone https://$github/sbwml/tools_dwarves tools/dwarves
 
 # x86 - disable mitigations
 #sed -i 's/noinitrd/noinitrd mitigations=off/g' target/linux/x86/image/grub-efi.cfg

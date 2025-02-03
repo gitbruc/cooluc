@@ -12,7 +12,7 @@ git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages
 git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-24.10
 
 # wwan
-git clone https://github.com/sbwml/wwan-packages package/new/wwan
+#git clone https://github.com/sbwml/wwan-packages package/new/wwan
 
 # luci-app-filemanager
 rm -rf feeds/luci/applications/luci-app-filemanager
@@ -40,19 +40,6 @@ git clone https://$github/sbwml/packages_utils_lrzsz package/new/lrzsz
 curl -s $mirror/openwrt/patch/irqbalance/011-meson-numa.patch > feeds/packages/utils/irqbalance/patches/011-meson-numa.patch
 sed -i '/-Dcapng=disabled/i\\t-Dnuma=disabled \\' feeds/packages/utils/irqbalance/Makefile
 
-# frpc
-sed -i 's/procd_set_param stdout $stdout/procd_set_param stdout 0/g' feeds/packages/net/frp/files/frpc.init
-sed -i 's/procd_set_param stderr $stderr/procd_set_param stderr 0/g' feeds/packages/net/frp/files/frpc.init
-sed -i 's/stdout stderr //g' feeds/packages/net/frp/files/frpc.init
-sed -i '/stdout:bool/d;/stderr:bool/d' feeds/packages/net/frp/files/frpc.init
-sed -i '/stdout/d;/stderr/d' feeds/packages/net/frp/files/frpc.config
-sed -i 's/env conf_inc/env conf_inc enable/g' feeds/packages/net/frp/files/frpc.init
-sed -i "s/'conf_inc:list(string)'/& \\\\/" feeds/packages/net/frp/files/frpc.init
-sed -i "/conf_inc:list/a\\\t\t\'enable:bool:0\'" feeds/packages/net/frp/files/frpc.init
-sed -i '/procd_open_instance/i\\t\[ "$enable" -ne 1 \] \&\& return 1\n' feeds/packages/net/frp/files/frpc.init
-curl -s $mirror/openwrt/patch/luci/applications/luci-app-frpc/001-luci-app-frpc-hide-token.patch | patch -p1
-curl -s $mirror/openwrt/patch/luci/applications/luci-app-frpc/002-luci-app-frpc-add-enable-flag.patch | patch -p1
-
 # natmap
 pushd feeds/luci
     curl -s $mirror/openwrt/patch/luci/applications/luci-app-natmap/0001-luci-app-natmap-add-default-STUN-server-lists.patch | patch -p1
@@ -77,8 +64,6 @@ sed -i 's/#directory mask/directory mask/g' feeds/packages/net/samba4/files/smb.
 sed -i 's/0666/0644/g;s/0744/0755/g;s/0777/0755/g' feeds/luci/applications/luci-app-samba4/htdocs/luci-static/resources/view/samba4.js
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/samba.config
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.template
-# rk3568 bind cpus
-[ "$platform" = "rk3568" ] && sed -i 's#/usr/sbin/smbd -F#/usr/bin/taskset -c 1,0 /usr/sbin/smbd -F#' feeds/packages/net/samba4/files/samba.init
 
 # aria2 & ariaNG
 rm -rf feeds/packages/net/ariang
@@ -117,9 +102,6 @@ sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/new
 # Theme
 git clone --depth 1 https://$github/sbwml/luci-theme-argon package/new/luci-theme-argon
 
-# Mosdns
-git clone https://$github/sbwml/luci-app-mosdns -b v5 package/new/mosdns
-
 # OpenAppFilter
 git clone https://$github/sbwml/OpenAppFilter --depth=1 package/new/OpenAppFilter
 
@@ -148,11 +130,6 @@ fi
 # luci-compat - fix translation
 sed -i 's/<%:Up%>/<%:Move up%>/g' feeds/luci/modules/luci-compat/luasrc/view/cbi/tblsection.htm
 sed -i 's/<%:Down%>/<%:Move down%>/g' feeds/luci/modules/luci-compat/luasrc/view/cbi/tblsection.htm
-
-# frpc translation
-sed -i 's,发送,Transmission,g' feeds/luci/applications/luci-app-transmission/po/zh_Hans/transmission.po
-sed -i 's,frp 服务器,FRP 服务器,g' feeds/luci/applications/luci-app-frps/po/zh_Hans/frps.po
-sed -i 's,frp 客户端,FRP 客户端,g' feeds/luci/applications/luci-app-frpc/po/zh_Hans/frpc.po
 
 # SQM Translation
 mkdir -p feeds/packages/net/sqm-scripts/patches

@@ -203,9 +203,6 @@ EOF
 ./scripts/feeds update -a
 [ "$(whoami)" = "runner" ] && endgroup
 
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
-
 [ "$(whoami)" = "runner" ] && group "feeds install -a"
 ./scripts/feeds install -a
 [ "$(whoami)" = "runner" ] && endgroup
