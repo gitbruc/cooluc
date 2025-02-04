@@ -77,14 +77,3 @@ curl -s $mirror/openwrt/patch/openwrt-6.x/perf/Makefile > package/devel/perf/Mak
 # kselftests-bpf
 curl -s $mirror/openwrt/patch/packages-patches/kselftests-bpf/Makefile > package/devel/kselftests-bpf/Makefile
 
-# bcm53xx
-if [ "$platform" = "bcm53xx" ]; then
-    # mtd
-    sed -i 's/=1 -Wall/=1 -Wall -Wno-implicit-function-declaration/g' package/system/mtd/Makefile
-    # uwsgi
-    sed -i '/MAKE_VARS+=/iTARGET_CFLAGS += -Wno-incompatible-pointer-types\n' feeds/packages/net/uwsgi/Makefile
-    # libsoxr
-    sed -i '/CMAKE_INSTALL/iPKG_BUILD_FLAGS:=no-lto no-mold\n' feeds/packages/libs/libsoxr/Makefile
-    # wsdd2
-    sed -i '/Build\/Compile/iTARGET_CFLAGS += -Wno-error -Wno-int-conversion\n' feeds/packages/net/wsdd2/Makefile
-fi
