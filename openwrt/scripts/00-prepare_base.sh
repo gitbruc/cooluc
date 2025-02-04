@@ -103,7 +103,7 @@ if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
 fi
 
 # FullCone module
-git clone https://$gitea/sbwml/nft-fullcone package/new/nft-fullcone
+git clone https://github.com/gitbruc/nft-fullcone.git package/new/nft-fullcone
 
 # IPv6 NAT
 git clone https://$github/sbwml/packages_new_nat6 package/new/nat6
