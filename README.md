@@ -1,6 +1,6 @@
-# NanoPi R4S/R5S/R5C & X86_64 OpenWrt 简易构建脚本存档
+# ARM & X86_64 OpenWrt 简易构建脚本
 
-### 存档来自：https://init2.cooluc.com
+### 存档来自：sbwml/r4s_build_script(已归档)
 
 ---------------
 
@@ -21,18 +21,10 @@
 ## 本地编译环境安装（根据 debian 11 / ubuntu 22）
 ```shell
 sudo apt-get update
-sudo apt-get install -y build-essential flex bison g++ gawk gcc-multilib g++-multilib gettext git libfuse-dev libncurses5-dev libssl-dev python3 python3-pip python3-ply python3-distutils python3-pyelftools rsync unzip zlib1g-dev file wget subversion patch upx-ucl autoconf automake curl asciidoc binutils bzip2 lib32gcc-s1 libc6-dev-i386 uglifyjs msmtp texinfo libreadline-dev libglib2.0-dev xmlto libelf-dev libtool autopoint antlr3 gperf ccache swig coreutils haveged scons libpython3-dev jq
+sudo apt-get install -y build-essential flex bison g++ gawk gcc-multilib g++-multilib gettext git libfuse-dev libncurses5-dev libssl-dev python3 python3-pip python3-ply python3-distutils python3-pyelftools rsync unzip zlib1g-dev file wget subversion patch upx-ucl autoconf automake curl asciidoc binutils bzip2 lib32gcc-s1 libc6-dev-i386 uglifyjs msmtp texinfo libreadline-dev libglib2.0-dev xmlto libelf-dev libtool autopoint antlr3 gperf ccache swig coreutils haveged scons libpython3-dev jq cmake gnutls-dev qemu-utils
 ```
 
 ---------------
-
-### 启用 [Clang/LLVM](https://docs.kernel.org/kbuild/llvm.html) 构建内核
-##### 脚本支持使用 Clang/LLVM 构建内核，NanoPi & X86_64 设备将同时启用 LLVM LTO 链接时优化，这会增加编译的时间，但会获得更优的性能
-##### 只需在构建固件前执行以下命令即可启用 Clang/LLVM 构建内核与内核模块
-
-```
-export KERNEL_CLANG_LTO=y
-```
 
 ### 启用 [GCC13](https://gcc.gnu.org/gcc-13/)/[GCC14](https://gcc.gnu.org/gcc-14/)/[GCC15](https://gcc.gnu.org/gcc-15/) 工具链编译
 ##### 只需在构建固件前执行以下命令即可启用 GCC13/GCC14/GCC15 交叉工具链
@@ -78,14 +70,6 @@ export ENABLE_BPF=y
 
 ```
 export ENABLE_LRNG=y
-```
-
-### 启用 [Glibc](https://www.gnu.org/software/libc/) 库构建 （实验性）
-##### 启用 glibc 库进行构建时，构建的固件将会同时兼容 musl/glibc 的预构建二进制程序，但缺失 `opkg install` 安装源支持
-##### 只需在构建固件前执行以下命令即可启用 glibc 构建
-
-```
-export ENABLE_GLIBC=y
 ```
 
 ### 启用本地 Kernel Modules 安装源 （For developers）
@@ -149,42 +133,18 @@ export NO_KMOD=y
 
 ## 构建 OpenWrt 24.10 最新 Releases
 
-### nanopi-r4s
-```shell
-# linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) rc2 nanopi-r4s
-```
-
-### nanopi-r5s/r5c
-```shell
-# linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) rc2 nanopi-r5s
-```
-
 ### x86_64
 ```shell
 # linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) rc2 x86_64
+bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) rc2 x86_64
 ```
 
 ## 构建 OpenWrt 24.10 开发版（24.10-SNAPSHOT）
 
-### nanopi-r4s
-```shell
-# linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) dev nanopi-r4s
-```
-
-### nanopi-r5s/r5c
-```shell
-# linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) dev nanopi-r5s
-```
-
 ### x86_64
 ```shell
 # linux-6.12
-bash <(curl -sS https://init2.cooluc.com/build.sh) dev x86_64
+bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) dev x86_64
 ```
 
 -----------------
@@ -197,7 +157,7 @@ bash <(curl -sS https://init2.cooluc.com/build.sh) dev x86_64
 
 ### 二、修改构建脚本文件：`openwrt/build.sh`（使用 Github Actions 构建时无需更改）
 
-将 init.cooluc.com 脚本默认连接替换为你的 github raw 连接，像这样 `https://raw.githubusercontent.com/你的用户名/r4s_build_script/refs/heads/master`
+将脚本默认连接替换为你的 github raw 连接，像这样 `https://raw.githubusercontent.com/你的用户名/r4s_build_script/refs/heads/master`
 
 ```diff
  # script url
@@ -211,18 +171,6 @@ bash <(curl -sS https://init2.cooluc.com/build.sh) dev x86_64
 ```
 
 ### 三、在本地 Linux 执行基于你自己仓库的构建脚本，即可编译所需固件
-
-#### nanopi-r4s openwrt-24.10
-```shell
-# linux-6.12
-bash <(curl -sS https://raw.githubusercontent.com/你的用户名/r4s_build_script/refs/heads/master/openwrt/build.sh) rc2 nanopi-r4s
-```
-
-#### nanopi-r5s/r5c openwrt-24.10
-```shell
-# linux-6.12
-bash <(curl -sS https://raw.githubusercontent.com/你的用户名/r4s_build_script/refs/heads/master/openwrt/build.sh) rc2 nanopi-r5s
-```
 
 #### x86_64 openwrt-24.10
 ```shell

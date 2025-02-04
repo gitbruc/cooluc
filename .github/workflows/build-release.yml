@@ -10,9 +10,6 @@ on:
         type: choice
         options:
           - 'armv8'
-          - 'nanopi-r4s'
-          - 'nanopi-r5s'
-          - 'netgear_r8500'
           - 'x86_64'
       version:
         description: 'Select the build version'
