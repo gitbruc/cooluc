@@ -175,7 +175,8 @@ jobs:
         name: ${{ github.event.inputs.device }}-openwrt-${{ env.latest_release }}
         path: |
           ${{ env.build_dir }}/rom/*
-          ${{ env.build_dir }}/info/*
+          ${{ env.build_dir }}/info/manifest.txt
+          ${{ env.build_dir }}/info/config.buildinfo
 
     - name: Create release
       continue-on-error: true
