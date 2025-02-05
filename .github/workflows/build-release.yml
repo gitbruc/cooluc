@@ -155,8 +155,8 @@ jobs:
           cp -a openwrt/bin/targets/x86/*/*-squashfs-combined-efi.img.gz rom/
           cp -a openwrt/bin/targets/x86/*/*-squashfs-combined-efi.vmdk rom/
           cp -a openwrt/bin/targets/x86/*/*-generic-rootfs.tar.gz rom/
-          cp -a openwrt/bin/targets/x86/*/*-x86-64-generic.manifest info/manifest.txt
-          cp -a openwrt/bin/targets/x86/*/config.buildinfo info/config.buildinfo
+          cp -a openwrt/bin/targets/x86/*/*-x86-64-generic.manifest rom/manifest.txt
+          cp -a openwrt/bin/targets/x86/*/config.buildinfo rom/config.buildinfo
           cd rom && sha256sum *gz > ../info/sha256sums.txt
         elif [ "${{ github.event.inputs.device }}" = "armv8" ]; then
           tar zcf rom/u-boot-qemu_armv8.tar.gz -C openwrt/bin/targets/armsr/armv8*/ ./u-boot-qemu_armv8
@@ -165,18 +165,15 @@ jobs:
           cp -a openwrt/bin/targets/armsr/armv8*/*-generic-ext4-combined-efi.img.gz rom/
           cp -a openwrt/bin/targets/armsr/armv8*/*-generic-squashfs-combined-efi.img.gz rom/
           cp -a openwrt/bin/targets/armsr/armv8*/*-rootfs.tar.gz rom/
-          cp -a openwrt/bin/targets/armsr/armv8*/*.manifest info/manifest.txt
-          cp -a openwrt/bin/targets/armsr/armv8*/config.buildinfo info/config.buildinfo
+          cp -a openwrt/bin/targets/armsr/armv8*/*.manifest rom/manifest.txt
+          cp -a openwrt/bin/targets/armsr/armv8*/config.buildinfo rom/config.buildinfo
           cd rom && sha256sum * > ../info/sha256sums.txt
         fi
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ github.event.inputs.device }}-openwrt-${{ env.latest_release }}
-        path: |
-          ${{ env.build_dir }}/rom/*
-          ${{ env.build_dir }}/info/manifest.txt
-          ${{ env.build_dir }}/info/config.buildinfo
+        path: ${{ env.build_dir }}/rom/*
 
     - name: Create release
       continue-on-error: true
