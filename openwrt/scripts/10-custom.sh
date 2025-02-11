@@ -9,8 +9,8 @@ git clone https://github.com/tty228/luci-app-wechatpush.git package/new/luci-app
 # bbrswitch
 git clone https://github.com/gitbruc/openwrt-BBR.git package/new/luci-app-bbrswitch
 # passwall
-#rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
-#git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
+rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
+git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
 # autotimeset
 git clone https://github.com/sirpdboy/luci-app-autotimeset.git package/new/luci-app-autotimeset
 # control-watchcat
