@@ -92,9 +92,9 @@ CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
 CONFIG_PACKAGE_luci-app-bbrswitch=y
-CONFIG_PACKAGE_luci-app-mwan3=y
-CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
-CONFIG_PACKAGE_mwan3=y
+#CONFIG_PACKAGE_luci-app-mwan3 is not set
+#CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn is not set
+#CONFIG_PACKAGE_mwan3 is not set
 CONFIG_GRUB_TIMEOUT="2"
 CONFIG_GRUB_TITLE="XiaomanWrt"
 CONFIG_PACKAGE_luci-app-autotimeset=y
