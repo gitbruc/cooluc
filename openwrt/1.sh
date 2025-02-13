@@ -20,9 +20,9 @@ endgroup() {
     GROUP=
 }
 
-#####################################
-#  NanoPi R4S OpenWrt Build Script  #
-#####################################
+############################
+#  OpenWrt Build Script  #
+############################
 
 # IP Location
 ip_info=`curl -sk https://ip.cooluc.com`;
@@ -33,11 +33,6 @@ if [ "$isCN" = "CN" ]; then
     export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
 else
     export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-fi
-
-# github actions - caddy server
-if [ "$(whoami)" = "runner" ] && [ -z "$git_password" ]; then
-    export mirror=http://127.0.0.1:8080
 fi
 
 # private gitea
@@ -68,17 +63,11 @@ if curl --help | grep progress-bar >/dev/null 2>&1; then
     CURL_BAR="--progress-bar";
 fi
 
-if [ -z "$1" ] || [ "$2" != "nanopi-r4s" -a "$2" != "nanopi-r5s" -a "$2" != "x86_64" -a "$2" != "netgear_r8500" -a "$2" != "armv8" ]; then
+if [ -z "$1" ] || [ "$2" != "x86_64" -a "$2" != "armv8" ]; then
     echo -e "\n${RED_COLOR}Building type not specified.${RES}\n"
     echo -e "Usage:\n"
-    echo -e "nanopi-r4s releases: ${GREEN_COLOR}bash build.sh rc2 nanopi-r4s${RES}"
-    echo -e "nanopi-r4s snapshots: ${GREEN_COLOR}bash build.sh dev nanopi-r4s${RES}"
-    echo -e "nanopi-r5s releases: ${GREEN_COLOR}bash build.sh rc2 nanopi-r5s${RES}"
-    echo -e "nanopi-r5s snapshots: ${GREEN_COLOR}bash build.sh dev nanopi-r5s${RES}"
     echo -e "x86_64 releases: ${GREEN_COLOR}bash build.sh rc2 x86_64${RES}"
     echo -e "x86_64 snapshots: ${GREEN_COLOR}bash build.sh dev x86_64${RES}"
-    echo -e "netgear-r8500 releases: ${GREEN_COLOR}bash build.sh rc2 netgear_r8500${RES}"
-    echo -e "netgear-r8500 snapshots: ${GREEN_COLOR}bash build.sh dev netgear_r8500${RES}"
     echo -e "armsr-armv8 releases: ${GREEN_COLOR}bash build.sh rc2 armv8${RES}"
     echo -e "armsr-armv8 snapshots: ${GREEN_COLOR}bash build.sh dev armv8${RES}\n"
     exit 1
@@ -99,9 +88,6 @@ fi
 
 # platform
 [ "$2" = "armv8" ] && export platform="armv8" toolchain_arch="aarch64_generic"
-[ "$2" = "nanopi-r4s" ] && export platform="rk3399" toolchain_arch="aarch64_generic"
-[ "$2" = "nanopi-r5s" ] && export platform="rk3568" toolchain_arch="aarch64_generic"
-[ "$2" = "netgear_r8500" ] && export platform="bcm53xx" toolchain_arch="arm_cortex-a9"
 [ "$2" = "x86_64" ] && export platform="x86_64" toolchain_arch="x86_64"
 
 # gcc14 & 15
@@ -120,9 +106,7 @@ fi
 export \
     ENABLE_BPF=$ENABLE_BPF \
     ENABLE_DPDK=$ENABLE_DPDK \
-    ENABLE_GLIBC=$ENABLE_GLIBC \
     ENABLE_LRNG=$ENABLE_LRNG \
-    KERNEL_CLANG_LTO=$KERNEL_CLANG_LTO
 
 # print version
 echo -e "\r\n${GREEN_COLOR}Building $branch${RES}\r\n"
@@ -131,26 +115,16 @@ if [ "$platform" = "x86_64" ]; then
 elif [ "$platform" = "armv8" ]; then
     echo -e "${GREEN_COLOR}Model: armsr/armv8${RES}"
     [ "$1" = "rc2" ] && model="armv8"
-elif [ "$platform" = "bcm53xx" ]; then
-    echo -e "${GREEN_COLOR}Model: netgear_r8500${RES}"
-    [ "$LAN" = "10.0.0.1" ] && export LAN="192.168.1.1"
-elif [ "$platform" = "rk3568" ]; then
-    echo -e "${GREEN_COLOR}Model: nanopi-r5s/r5c${RES}"
-    [ "$1" = "rc2" ] && model="nanopi-r5s"
 else
-    echo -e "${GREEN_COLOR}Model: nanopi-r4s${RES}"
-    [ "$1" = "rc2" ] && model="nanopi-r4s"
+   # This should not happen because of the previous validation, but it's good to have a fallback
+   echo -e "${RED_COLOR}Unexpected error: Platform is unexpectedly invalid after validation.$RES"
+   exit 1
 fi
-get_kernel_version=$(curl -s $mirror/tags/kernel-6.12)
-kmod_hash=$(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}' | tail -1 | md5sum | awk '{print $1}')
-kmodpkg_name=$(echo $(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}')~$(echo $kmod_hash)-r1)
-echo -e "${GREEN_COLOR}Kernel: $kmodpkg_name ${RES}"
 
 echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
 echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 [ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN: $LAN${RES}" || echo -e "${GREEN_COLOR}LAN: 10.0.0.1${RES}"
 [ "$ENABLE_GLIBC" = "y" ] && echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}glibc${RES}" || echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}musl${RES}"
-[ "$ENABLE_OTA" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_OTA: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_OTA:${RES} ${YELLOW_COLOR}false${RES}"
 [ "$ENABLE_DPDK" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_DPDK: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_DPDK:${RES} ${YELLOW_COLOR}false${RES}"
 [ "$ENABLE_MOLD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_MOLD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_MOLD:${RES} ${YELLOW_COLOR}false${RES}"
 [ "$ENABLE_BPF" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_BPF: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_BPF:${RES} ${RED_COLOR}false${RES}"
@@ -160,7 +134,6 @@ echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 [ "$BUILD_FAST" = "y" ] && echo -e "${GREEN_COLOR}BUILD_FAST: true${RES}" || echo -e "${GREEN_COLOR}BUILD_FAST:${RES} ${YELLOW_COLOR}false${RES}"
 [ "$ENABLE_CCACHE" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_CCACHE: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_CCACHE:${RES} ${YELLOW_COLOR}false${RES}"
 [ "$MINIMAL_BUILD" = "y" ] && echo -e "${GREEN_COLOR}MINIMAL_BUILD: true${RES}" || echo -e "${GREEN_COLOR}MINIMAL_BUILD: false${RES}"
-[ "$KERNEL_CLANG_LTO" = "y" ] && echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO: true${RES}\r\n" || echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO:${RES} ${YELLOW_COLOR}false${RES}\r\n"
 
 # clean old files
 rm -rf openwrt master
@@ -234,6 +207,8 @@ curl -sO $mirror/openwrt/scripts/05-fix-source.sh
 curl -sO $mirror/openwrt/scripts/99_clean_build_cache.sh
 curl -sO $mirror/openwrt/scripts/insert.js
 curl -sO $mirror/openwrt/scripts/1.png
+#curl -sO https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh
+
 if [ -n "$git_password" ] && [ -n "$private_url" ]; then
     curl -u openwrt:$git_password -sO "$private_url"
 else
@@ -244,10 +219,12 @@ chmod 0755 *sh
 bash 00-prepare_base.sh
 bash 01-prepare_base-mainline.sh
 bash 02-prepare_package.sh
+#bash add_turboacc.sh
 bash 03-convert_translation.sh
 bash 04-fix_kmod.sh
 bash 05-fix-source.sh
 [ -f "10-custom.sh" ] && bash 10-custom.sh
+find feeds -type f -name "*.orig" -exec rm -f {} \;
 [ "$(whoami)" = "runner" ] && endgroup
 
 rm -f 0*-*.sh 10-custom.sh
@@ -256,19 +233,11 @@ rm -rf ../master
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
     curl -s $mirror/openwrt/24-config-musl-x86 > .config
-elif [ "$platform" = "bcm53xx" ]; then
-    if [ "$MINIMAL_BUILD" = "y" ]; then
-        curl -s $mirror/openwrt/24-config-musl-r8500-minimal > .config
-    else
-        curl -s $mirror/openwrt/24-config-musl-r8500 > .config
-    fi
-    sed -i '1i\# CONFIG_PACKAGE_kselftests-bpf is not set\n# CONFIG_PACKAGE_perf is not set\n' .config
-elif [ "$platform" = "rk3568" ]; then
-    curl -s $mirror/openwrt/24-config-musl-r5s > .config
 elif [ "$platform" = "armv8" ]; then
     curl -s $mirror/openwrt/24-config-musl-armsr-armv8 > .config
 else
-    curl -s $mirror/openwrt/24-config-musl-r4s > .config
+    echo -e "${RED_COLOR}Unsupported platform: $platform${RES}"
+    exit 1
 fi
 
 # config-common
@@ -280,21 +249,12 @@ else
     [ "$platform" = "armv8" ] && sed -i '/DOCKER/Id' .config
 fi
 
-# ota
-[ "$ENABLE_OTA" = "y" ] && [ "$version" = "rc2" ] && echo 'CONFIG_PACKAGE_luci-app-ota=y' >> .config
-
 # bpf
 [ "$ENABLE_BPF" = "y" ] && curl -s $mirror/openwrt/generic/config-bpf >> .config
 
 # LTO
 export ENABLE_LTO=$ENABLE_LTO
 [ "$ENABLE_LTO" = "y" ] && curl -s $mirror/openwrt/generic/config-lto >> .config
-
-# glibc
-[ "$ENABLE_GLIBC" = "y" ] && {
-    curl -s $mirror/openwrt/generic/config-glibc >> .config
-    sed -i '/NaiveProxy/d' .config
-}
 
 # DPDK
 [ "$ENABLE_DPDK" = "y" ] && {
@@ -304,18 +264,6 @@ export ENABLE_LTO=$ENABLE_LTO
 
 # mold
 [ "$ENABLE_MOLD" = "y" ] && echo 'CONFIG_USE_MOLD=y' >> .config
-
-# kernel - CLANG + LTO; Allow CONFIG_KERNEL_CC=clang / clang-18 / clang-xx
-if [ "$KERNEL_CLANG_LTO" = "y" ]; then
-    echo '# Kernel - CLANG LTO' >> .config
-    if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
-        echo 'CONFIG_KERNEL_CC="ccache clang"' >> .config
-    else
-        echo 'CONFIG_KERNEL_CC="clang"' >> .config
-    fi
-    echo 'CONFIG_EXTRA_OPTIMIZATION=""' >> .config
-    echo '# CONFIG_PACKAGE_kselftests-bpf is not set' >> .config
-fi
 
 # kernel - enable LRNG
 if [ "$ENABLE_LRNG" = "y" ]; then
@@ -349,7 +297,7 @@ echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 [ "$NO_KMOD" = "y" ] && sed -i '/CONFIG_ALL_KMODS=y/d; /CONFIG_ALL_NONSHARED=y/d' .config
 
 # build wwan pkgs for openwrt_core
-# [ "$OPENWRT_CORE" = "y" ] && curl -s $mirror/openwrt/generic/config-wwan >> .config
+[ "$OPENWRT_CORE" = "y" ] && curl -s $mirror/openwrt/generic/config-wwan >> .config
 
 # ccache
 if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
@@ -364,13 +312,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    PLATFORM_ID=""
-    [ -f /etc/os-release ] && source /etc/os-release
-    if [ "$PLATFORM_ID" = "platform:el9" ]; then
-        TOOLCHAIN_URL="http://127.0.0.1:8080"
-    else
-        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
-    fi
+    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
