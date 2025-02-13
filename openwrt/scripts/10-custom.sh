@@ -1,4 +1,6 @@
 #!/bin/bash
+# wrtbwmon
+git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
 # onliner
 git clone https://github.com/gitbruc/luci-onliner.git package/new/luci-app-onliner
 # ddns-go
