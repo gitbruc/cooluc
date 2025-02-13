@@ -92,7 +92,6 @@ CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
 CONFIG_PACKAGE_luci-app-advanced-reboot=y
-CONFIG_PACKAGE_luci-app-attendedsysupgrade=y
 CONFIG_PACKAGE_luci-app-banip=y
 CONFIG_PACKAGE_luci-app-cloudflared=y
 CONFIG_PACKAGE_luci-app-bbrswitch=y
