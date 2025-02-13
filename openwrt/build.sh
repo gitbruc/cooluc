@@ -97,8 +97,6 @@ elif [ "$USE_GCC14" = y ]; then
     export USE_GCC14=y gcc_version=14
 elif [ "$USE_GCC15" = y ]; then
     export USE_GCC15=y gcc_version=15
-else
-    export USE_GCC13=y gcc_version=13
 fi
 [ "$ENABLE_MOLD" = y ] && export ENABLE_MOLD=y
 
@@ -281,13 +279,17 @@ fi
 
 # gcc15 patches
 [ "$(whoami)" = "runner" ] && group "patching toolchain"
-curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
+if [ "$USE_GCC15" = y ]; then
+    curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
+fi
 
 # gcc config
-echo -e "\n# gcc ${gcc_version}" >> .config
-echo -e "CONFIG_DEVEL=y" >> .config
-echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
-echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
+if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
+    echo -e "\n# gcc ${gcc_version}" >> .config
+    echo -e "CONFIG_DEVEL=y" >> .config
+    echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
+    echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
+fi
 [ "$(whoami)" = "runner" ] && endgroup
 
 # uhttpd
