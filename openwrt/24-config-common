@@ -91,7 +91,6 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
-CONFIG_PACKAGE_wrtbwmon=y
 CONFIG_PACKAGE_luci-app-wrtbwmon=y
 CONFIG_PACKAGE_luci-i18n-wrtbwmon-zh-cn=y
 CONFIG_PACKAGE_adguardhome=y
@@ -116,7 +115,7 @@ CONFIG_VMDK_IMAGES=y
 # CONFIG_PACKAGE_luci-app-arpbind is not set
 CONFIG_PACKAGE_luci-app-wechatpush=y
 CONFIG_PACKAGE_luci-i18n-wechatpush-zh-cn=y
-CONFIG_PACKAGE_luci-app-wechatpush_Enable_Traffic_Monitoring=y
+# CONFIG_PACKAGE_luci-app-wechatpush_Enable_Traffic_Monitoring is not set
 CONFIG_PACKAGE_luci-app-wechatpush_Local_Disk_Information_Detection=y
 CONFIG_PACKAGE_luci-app-wechatpush_Host_Information_Detection=y
 CONFIG_PACKAGE_luci-app-ddns-go=y
