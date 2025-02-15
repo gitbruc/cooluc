@@ -91,6 +91,7 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
+CONFIG_PACKAGE_luci-app-vnstat2=y
 CONFIG_PACKAGE_wrtbwmon=y
 CONFIG_PACKAGE_luci-app-wrtbwmon=y
 CONFIG_PACKAGE_luci-i18n-wrtbwmon-zh-cn=y
