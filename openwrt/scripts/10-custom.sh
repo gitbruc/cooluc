@@ -1,6 +1,4 @@
 #!/bin/bash
-# iftop
-git clone https://github.com/gitbruc/luci-app-iftop.git package/new/luci-app-iftop
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
 # onliner
