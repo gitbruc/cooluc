@@ -77,3 +77,6 @@ curl -s $mirror/openwrt/patch/openwrt-6.x/perf/Makefile > package/devel/perf/Mak
 # kselftests-bpf
 curl -s $mirror/openwrt/patch/packages-patches/kselftests-bpf/Makefile > package/devel/kselftests-bpf/Makefile
 
+# sms-tools
+mkdir -p feeds/packages/utils/sms-tool/patches
+curl -s $mirror/openwrt/patch/packages-patches/sms-tools/900-fix-incompatible-pointer-type-error-for-signal-function.patch > feeds/packages/utils/sms-tool/patches/900-fix-incompatible-pointer-type-error-for-signal-function.patch
