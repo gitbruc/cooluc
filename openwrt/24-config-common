@@ -92,6 +92,8 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
+CONFIG_PACKAGE_luci-app-smartdns=y
+CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
 CONFIG_PACKAGE_iftop=y
 #CONFIG_PACKAGE_wrtbwmon is not set
 #CONFIG_PACKAGE_luci-app-wrtbwmon is not set
