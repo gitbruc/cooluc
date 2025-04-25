@@ -81,7 +81,7 @@ git clone https://$github/sbwml/package_new_ftp package/new/ftp
 
 # SSRP & Passwall
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-git clone https://$github/gitbruc/openwrt_helloworld package/new/helloworld -b v5
+git clone https://$github/sbwml/openwrt_helloworld package/new/helloworld -b v5
 
 # alist
 rm -rf feeds/packages/net/alist feeds/luci/applications/luci-app-alist
