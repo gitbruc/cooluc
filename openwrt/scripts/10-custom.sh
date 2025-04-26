@@ -2,7 +2,7 @@
 # smartdns
 rm -rf feeds/packages/net/smartdns
 rm -rf feeds/luci/applications/luci-app-smartdns
-git clone https://github.com/pymumu/openwrt-smartdns.git package/new/smartdns
+git clone https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
 git clone https://github.com/pymumu/luci-app-smartdns.git package/new/luci-app-smartdns
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
