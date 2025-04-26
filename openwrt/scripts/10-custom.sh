@@ -1,5 +1,7 @@
 #!/bin/bash
 # smartdns
+rm -rf feeds/packages/net/smartdns
+rm -rf feeds/luci/applications/luci-app-smartdns
 git clone https://github.com/pymumu/openwrt-smartdns.git package/new/smartdns
 git clone https://github.com/pymumu/luci-app-smartdns.git package/new/luci-app-smartdns
 # wrtbwmon
