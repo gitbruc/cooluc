@@ -802,7 +802,8 @@ $(eval $(call KernelPackage,ikconfig))
 define KernelPackage/zram
   SUBMENU:=$(OTHER_MENU)
   TITLE:=ZRAM
-  DEPENDS:=+LINUX_6_12:kmod-lib-lzo
+  DEPENDS:=+LINUX_6_12:kmod-lib-lzo +LINUX_6_12:kmod-lib-lz4 \
+           +LINUX_6_12:kmod-lib-lz4hc +LINUX_6_12:kmod-lib-zstd
   KCONFIG:= \
 	CONFIG_ZSMALLOC \
 	CONFIG_ZRAM \
