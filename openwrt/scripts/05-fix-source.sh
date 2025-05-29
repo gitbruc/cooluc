@@ -44,7 +44,7 @@ if [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
 fi
 
 # fix gcc-15
-if [ "$USE_GCC15" = y ] || [ "$USE_GCC14" = y ]; then
+if [ "$USE_GCC15" = y ]; then
     sed -i '/TARGET_CFLAGS/ s/$/ -Wno-error=unterminated-string-initialization/' package/libs/mbedtls/Makefile
     # elfutils
     curl -s $mirror/openwrt/patch/openwrt-6.x/gcc-15/elfutils/901-backends-fix-string-initialization-error-on-gcc15.patch > package/libs/elfutils/patches/901-backends-fix-string-initialization-error-on-gcc15.patch

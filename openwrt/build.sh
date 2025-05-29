@@ -279,9 +279,7 @@ fi
 
 # gcc15 patches
 [ "$(whoami)" = "runner" ] && group "patching toolchain"
-if [ "$USE_GCC15" = y ]; then
-    curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
-fi
+curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
 
 # gcc config
 if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
