@@ -15,7 +15,6 @@ git clone https://$github/sbwml/package_network_utils_xdp-tools package/network/
 
 # fix gcc14
 if [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
-    sed -i '/TARGET_CFLAGS/ s/$/ -Wno-error=unterminated-string-initialization/' package/libs/mbedtls/Makefile
     # linux-atm
     rm -rf package/network/utils/linux-atm
     git clone https://$github/sbwml/package_network_utils_linux-atm package/network/utils/linux-atm
