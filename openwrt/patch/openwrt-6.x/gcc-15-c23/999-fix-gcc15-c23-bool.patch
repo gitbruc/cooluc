@@ -1,21 +1,20 @@
+diff --git a/include/linux/stddef.h b/include/linux/stddef.h
+index e69de29..0000000 100644
 --- a/include/linux/stddef.h
 +++ b/include/linux/stddef.h
-@@
-- enum {
--        false   = 0,
--        true    = 1
-- };
-+ #if __STDC_VERSION__ < 202000L
-+ enum {
-+        false   = 0,
-+        true    = 1
-+ };
-+ #endif
+@@ -1,6 +1,9 @@
++#if __STDC_VERSION__ < 202000L
+ enum {
+     false   = 0,
+     true    = 1
+ };
++#endif
 
+diff --git a/include/linux/types.h b/include/linux/types.h
+index e69de29..0000000 100644
 --- a/include/linux/types.h
 +++ b/include/linux/types.h
-@@
-- typedef _Bool                   bool;
-+ #if __STDC_VERSION__ < 202000L
-+ typedef _Bool                   bool;
-+ #endif
+@@ -1,2 +1,5 @@
++#if __STDC_VERSION__ < 202000L
+ typedef _Bool                   bool;
++#endif
