@@ -58,7 +58,7 @@ fi
 
 # fix gcc-15.0.1 C23
 if [ "$USE_GCC15" = y ]; then
-    sed -i '/^ARCH:=i386/a KBUILD_CFLAGS += -std=gnu17' openwrt/target/linux/x86/Makefile
+    sed -i '/^ARCH:=i386/a KBUILD_CFLAGS += -std=gnu17' target/linux/x86/Makefile
     # gmp
     mkdir -p package/libs/gmp/patches
     curl -s $mirror/openwrt/patch/openwrt-6.x/gcc-15-c23/gmp/001-fix-build-with-gcc-15.patch > package/libs/gmp/patches/001-fix-build-with-gcc-15.patch
