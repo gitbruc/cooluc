@@ -1,0 +1,21 @@
+--- a/include/linux/stddef.h
++++ b/include/linux/stddef.h
+@@
+- enum {
+-        false   = 0,
+-        true    = 1
+- };
++ #if __STDC_VERSION__ < 202000L
++ enum {
++        false   = 0,
++        true    = 1
++ };
++ #endif
+
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@
+- typedef _Bool                   bool;
++ #if __STDC_VERSION__ < 202000L
++ typedef _Bool                   bool;
++ #endif
