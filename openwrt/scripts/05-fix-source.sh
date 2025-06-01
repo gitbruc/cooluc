@@ -58,6 +58,10 @@ fi
 
 # fix gcc-15.0.1 C23
 if [ "$USE_GCC15" = y ]; then
+    #iftop
+    curl -s $mirror/openwrt/patch/openwrt-6.x/gcc-15-c23/iftop/100-fix-read_config-arguments.patch > feeds/packages/net/iftop/patches/100-fix-read_config-arguments.patch
+    curl -s $mirror/openwrt/patch/openwrt-6.x/gcc-15-c23/iftop/101-fix-read_config-c-type.patch > feeds/packages/net/iftop/patches/101-fix-read_config-c-type.patch
+    #linux6.6.86
     curl -s $mirror/openwrt/patch/openwrt-6.x/gcc-15-c23/999-fix-gcc15-c23-bool.patch > target/linux/x86/patches-6.6/999-fix-gcc15-c23-bool.patch
     # gmp
     mkdir -p package/libs/gmp/patches
