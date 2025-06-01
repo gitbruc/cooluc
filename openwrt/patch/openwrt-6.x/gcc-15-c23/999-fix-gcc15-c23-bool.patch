@@ -1,20 +1,27 @@
-diff --git a/include/linux/stddef.h b/include/linux/stddef.h
-index e69de29..0000000 100644
---- a/include/linux/stddef.h
-+++ b/include/linux/stddef.h
-@@ -1,6 +1,9 @@
-+#if __STDC_VERSION__ < 202000L
+--- a/include/linux/stddef.h	2025-04-07 08:06:37.000000000 +0000
++++ b/include/linux/stddef.h	2025-06-01 08:56:38.176438007 +0000
+@@ -7,10 +7,12 @@
+ #undef NULL
+ #define NULL ((void *)0)
+ 
++#if __STDC_VERSION__ < 202000L // <--- 添加这一行
  enum {
-     false   = 0,
-     true    = 1
+ 	false	= 0,
+ 	true	= 1
  };
-+#endif
-
-diff --git a/include/linux/types.h b/include/linux/types.h
-index e69de29..0000000 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -1,2 +1,5 @@
-+#if __STDC_VERSION__ < 202000L
- typedef _Bool                   bool;
-+#endif
++#endif // <--- 添加这一行
+ 
+ #undef offsetof
+ #define offsetof(TYPE, MEMBER)	__builtin_offsetof(TYPE, MEMBER)
+--- a/include/linux/types.h	2025-04-07 08:06:37.000000000 +0000
++++ b/include/linux/types.h	2025-06-01 08:58:11.845234872 +0000
+@@ -32,7 +32,9 @@
+ typedef __kernel_clockid_t	clockid_t;
+ typedef __kernel_mqd_t		mqd_t;
+ 
++#if __STDC_VERSION__ < 202000L // <--- 添加这一行
+ typedef _Bool			bool;
++#endif // <--- 添加这一行
+ 
+ typedef __kernel_uid32_t	uid_t;
+ typedef __kernel_gid32_t	gid_t;
