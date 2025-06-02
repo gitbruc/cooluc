@@ -214,6 +214,7 @@ if [ -n "$git_password" ] && [ -n "$private_url" ]; then
 else
     curl -sO $mirror/openwrt/scripts/10-custom.sh
 fi
+
 chmod 0755 *sh
 [ "$(whoami)" = "runner" ] && group "patching openwrt"
 bash 00-prepare_base.sh
@@ -229,6 +230,8 @@ find feeds -type f -name "*.orig" -exec rm -f {} \;
 
 rm -f 0*-*.sh 10-custom.sh
 rm -rf ../master
+
+chmod 0775 -R . 
 
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then

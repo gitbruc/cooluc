@@ -1,8 +1,8 @@
-/usr/bin/aircast
+#/usr/bin/aircast
 /usr/bin/airupnp
 /usr/bin/alist
 /usr/bin/frpc
-/usr/bin/mosdns
+/usr/bin/qemu-ga
 /usr/bin/sslocal
 /usr/bin/ssserver
 /usr/bin/v2dat
