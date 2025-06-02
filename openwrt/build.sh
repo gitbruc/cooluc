@@ -333,7 +333,7 @@ fi
 # Compile
 if [ "$BUILD_TOOLCHAIN" = "y" ]; then
     echo -e "\r\n${GREEN_COLOR}Building Toolchain ...${RES}\r\n"
-    make -j$cores toolchain/compile || make -j$cores toolchain/compile V=s || exit 1
+    make -j$cores toolchain/compile || make -j$cores toolchain/compile V=sc || exit 1
     mkdir -p toolchain-cache
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     tar -I "zstd -19 -T$(nproc --all)" -cf toolchain-cache/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst ./{build_dir,dl,staging_dir,tmp}
@@ -343,7 +343,7 @@ else
     echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
-    make -j$cores V=s IGNORE_ERRORS="n m"
+    make -j$cores V=sc IGNORE_ERRORS="n m"
 fi
 
 # Compile time
