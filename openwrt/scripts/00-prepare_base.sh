@@ -17,8 +17,8 @@ curl -s $mirror/openwrt/patch/generic-24.10/0008-meson-add-platform-variable-to-
 # attr no-mold
 [ "$ENABLE_MOLD" = "y" ] && sed -i '/PKG_BUILD_PARALLEL/aPKG_BUILD_FLAGS:=no-mold' feeds/packages/utils/attr/Makefile
 
-# x86 - disable mitigations
-#sed -i 's/noinitrd/noinitrd mitigations=off/g' target/linux/x86/image/grub-efi.cfg
+# x86 - bind 0-3 Gathering core affinity
+sed -i 's/noinitrd/noinitrd isolcpus=0-3/g' target/linux/x86/image/grub-efi.cfg
 
 # default LAN IP
 sed -i "s/192.168.1.1/$LAN/g" package/base-files/files/bin/config_generate
