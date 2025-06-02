@@ -26,7 +26,7 @@ on:
       lan_addr:
         description: 'Setting default LAN address'
         required: true
-        default: '10.0.0.1'
+        default: '192.168.50.1'
         type: string
       build_options:
         description: 'Build options (separate multiple options with spaces)'
