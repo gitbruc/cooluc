@@ -65,12 +65,12 @@ jobs:
         echo
 
     - name: Free disk space
-      uses: sbwml/actions@free-disk
+      uses: afro/actions@free-disk
       with:
         build-mount-path: /builder
 
     - name: Build System Setup
-      uses: sbwml/actions@openwrt-build-setup
+      uses: afro/actions@openwrt-build-setup
 
     - name: Restore Cached
       if: ${{ github.event.inputs.ccache == 'true' && github.event.inputs.device != 'armv8' && github.event.inputs.device != 'nanopi-r4s' }}

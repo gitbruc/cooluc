@@ -56,7 +56,7 @@ starttime=`date +'%Y-%m-%d %H:%M:%S'`
 CURRENT_DATE=$(date +%s)
 
 # Cpus
-cores=`expr $(nproc --all) + 1`
+cores=`expr $(nproc --all) / 3`
 
 # $CURL_BAR
 if curl --help | grep progress-bar >/dev/null 2>&1; then
@@ -118,7 +118,9 @@ else
    echo -e "${RED_COLOR}Unexpected error: Platform is unexpectedly invalid after validation.$RES"
    exit 1
 fi
-
+get_kernel_version=$(curl -s $mirror/tags/kernel-6.12)
+kmod_hash=$(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}' | tail -1 | md5sum | awk '{print $1}')
+kmodpkg_name=$(echo $(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}')~$(echo $kmod_hash)-r1)
 echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
 echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 [ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN: $LAN${RES}" || echo -e "${GREEN_COLOR}LAN: 192.168.50.1${RES}"
@@ -137,12 +139,12 @@ echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 rm -rf openwrt master
 
 # openwrt - releases
-[ "$(whoami)" = "runner" ] && group "source code"
+[ "$(whoami)" = "afro" ] && group "source code"
 git clone --depth=1 https://$github/openwrt/openwrt -b $branch
 
 # immortalwrt master
 git clone https://$github/immortalwrt/packages master/immortalwrt_packages --depth=1
-[ "$(whoami)" = "runner" ] && endgroup
+[ "$(whoami)" = "afro" ] && endgroup
 
 if [ -d openwrt ]; then
     cd openwrt
@@ -179,13 +181,13 @@ src-git telephony https://$github/openwrt/telephony.git$telephony
 EOF
 
 # Init feeds
-[ "$(whoami)" = "runner" ] && group "feeds update -a"
+[ "$(whoami)" = "afro" ] && group "feeds update -a"
 ./scripts/feeds update -a
-[ "$(whoami)" = "runner" ] && endgroup
+[ "$(whoami)" = "afro" ] && endgroup
 
-[ "$(whoami)" = "runner" ] && group "feeds install -a"
+[ "$(whoami)" = "afro" ] && group "feeds install -a"
 ./scripts/feeds install -a
-[ "$(whoami)" = "runner" ] && endgroup
+[ "$(whoami)" = "afro" ] && endgroup
 
 # loader dl
 if [ -f ../dl.gz ]; then
@@ -213,7 +215,7 @@ else
     curl -sO $mirror/openwrt/scripts/10-custom.sh
 fi
 chmod 0755 *sh
-[ "$(whoami)" = "runner" ] && group "patching openwrt"
+[ "$(whoami)" = "afro" ] && group "patching openwrt"
 bash 00-prepare_base.sh
 bash 01-prepare_base-mainline.sh
 bash 02-prepare_package.sh
@@ -223,7 +225,7 @@ bash 04-fix_kmod.sh
 bash 05-fix-source.sh
 [ -f "10-custom.sh" ] && bash 10-custom.sh
 find feeds -type f -name "*.orig" -exec rm -f {} \;
-[ "$(whoami)" = "runner" ] && endgroup
+[ "$(whoami)" = "afro" ] && endgroup
 
 rm -f 0*-*.sh 10-custom.sh
 rm -rf ../master
@@ -278,7 +280,7 @@ if [ "$ENABLE_LOCAL_KMOD" = "y" ]; then
 fi
 
 # gcc15 patches
-[ "$(whoami)" = "runner" ] && group "patching toolchain"
+[ "$(whoami)" = "afro" ] && group "patching toolchain"
 curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
 
 # gcc config
@@ -288,7 +290,7 @@ if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
     echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
     echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 fi
-[ "$(whoami)" = "runner" ] && endgroup
+[ "$(whoami)" = "afro" ] && endgroup
 
 # uhttpd
 [ "$ENABLE_UHTTPD" = "y" ] && sed -i '/nginx/d' .config && echo 'CONFIG_PACKAGE_ariang=y' >> .config
@@ -302,8 +304,8 @@ fi
 # ccache
 if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
     echo "CONFIG_CCACHE=y" >> .config
-    [ "$(whoami)" = "runner" ] && echo "CONFIG_CCACHE_DIR=\"/builder/.ccache\"" >> .config
-    [ "$(whoami)" = "sbwml" ] && echo "CONFIG_CCACHE_DIR=\"/home/sbwml/.ccache\"" >> .config
+    [ "$(whoami)" = "afro" ] && echo "CONFIG_CCACHE_DIR=\"/builder/.ccache\"" >> .config
+    [ "$(whoami)" = "afro" ] && echo "CONFIG_CCACHE_DIR=\"/home/afro/.ccache\"" >> .config
     tools_suffix="_ccache"
 fi
 
@@ -312,7 +314,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
+    TOOLCHAIN_URL=https://"$github_proxy"github.com/afro/openwrt_caches/releases/download/openwrt-24.10
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
