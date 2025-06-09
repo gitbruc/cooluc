@@ -23,6 +23,13 @@ curl -s $mirror/openwrt/patch/generic-24.10/0008-meson-add-platform-variable-to-
 # default LAN IP
 sed -i "s/192.168.1.1/$LAN/g" package/base-files/files/bin/config_generate
 
+# default password
+if [ -n "$ROOT_PASSWORD" ]; then
+    # sha256 encryption
+    default_password=$(openssl passwd -5 $ROOT_PASSWORD)
+    sed -i "s|^root:[^:]*:|root:${default_password}:|" package/base-files/files/etc/shadow
+fi
+
 # Use nginx instead of uhttpd
 if [ "$ENABLE_UHTTPD" != "y" ]; then
     sed -i 's/+uhttpd /+luci-nginx /g' feeds/luci/collections/luci/Makefile
