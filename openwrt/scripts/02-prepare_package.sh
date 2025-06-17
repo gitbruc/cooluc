@@ -81,9 +81,8 @@ git clone https://$github/sbwml/package_new_ftp package/new/ftp
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
 git clone https://$github/sbwml/openwrt_helloworld package/new/helloworld -b v5
 
-# alist
-rm -rf feeds/packages/net/alist feeds/luci/applications/luci-app-alist
-git clone https://$github/sbwml/openwrt-alist package/new/alist
+# openlist
+git clone https://$github/sbwml/luci-app-openlist package/new/openlist
 
 # netdata
 sed -i 's/syslog/none/g' feeds/packages/admin/netdata/files/netdata.conf
