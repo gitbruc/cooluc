@@ -136,7 +136,7 @@ export NO_KMOD=y
 ### x86_64
 ```shell
 # linux-6.12
-bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) rc2 x86_64
+bash <(curl -sS https://raw.githubusercontent.com/afrojewelz/cooluc/refs/heads/new/openwrt/build.sh) rc2 x86_64
 ```
 
 ## 构建 OpenWrt 24.10 开发版（24.10-SNAPSHOT）
@@ -144,7 +144,7 @@ bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/
 ### x86_64
 ```shell
 # linux-6.12
-bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) dev x86_64
+bash <(curl -sS https://raw.githubusercontent.com/afrojewelz/cooluc/refs/heads/new/openwrt/build.sh) dev x86_64
 ```
 
 -----------------
