@@ -148,7 +148,7 @@ CONFIG_PACKAGE_luci-app-ddns=y
 CONFIG_PACKAGE_luci-app-diskman=y
 # CONFIG_PACKAGE_luci-app-eqos is not set
 # CONFIG_PACKAGE_luci-app-filemanager is not set
-CONFIG_PACKAGE_luci-app-quickfile=y1
+CONFIG_PACKAGE_luci-app-quickfile=y
 # CONFIG_PACKAGE_luci-app-frpc is not set
 # CONFIG_PACKAGE_luci-app-mentohust is not set
 # CONFIG_PACKAGE_luci-app-mosdns is not set
