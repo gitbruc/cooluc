@@ -259,6 +259,7 @@ sed -i '/ubus_parallel_req/a\        ubus_script_timeout 300;' feeds/packages/ne
 # nginx - config
 curl -s $mirror/openwrt/nginx/luci.locations > feeds/packages/net/nginx/files-luci-support/luci.locations
 curl -s $mirror/openwrt/nginx/uci.conf.template > feeds/packages/net/nginx-util/files/uci.conf.template
+curl -s $mirror/openwrt/nginx/nginx.config > feeds/packages/net/nginx-util/files/nginx.config
 
 # opkg
 mkdir -p package/system/opkg/patches
