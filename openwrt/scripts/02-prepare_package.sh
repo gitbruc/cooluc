@@ -108,7 +108,7 @@ sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/new
 git clone https://$github/sbwml/luci-theme-argon package/new/luci-theme-argon --depth=1
 
 # OpenAppFilter
-git clone https://$github/sbwml/OpenAppFilter --depth=1 package/new/OpenAppFilter
+git clone https://$github/sbwml/OpenAppFilter --depth=1 package/new/OpenAppFilter -b v6
 
 # iperf3
 sed -i "s/D_GNU_SOURCE/D_GNU_SOURCE -funroll-loops/g" feeds/packages/net/iperf3/Makefile
