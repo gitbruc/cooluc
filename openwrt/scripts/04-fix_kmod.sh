@@ -19,3 +19,6 @@
 #    rm -rf feeds/packages/net/coova-chilli
 #    git clone https://$github/sbwml/kmod_packages_net_coova-chilli feeds/packages/net/coova-chilli
 #fi
+
+### BROKEN
+sed -i 's/^\([[:space:]]*DEPENDS:=.*\)$/\1 @BROKEN/' package/kernel/rtl8812au-ct/Makefile
