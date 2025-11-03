@@ -20,15 +20,15 @@ git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/hellowor
 # luci-app-taskplan
 git clone https://github.com/sirpdboy/luci-app-taskplan.git package/new/luci-app-taskplan
 # control-watchcat
-sed -i 's/admin\/services/admin\/control/' "feeds/luci/applications/luci-app-watchcat/root/usr/share/luci/menu.d/luci-app-watchcat.json"
+sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-watchcat/root/usr/share/luci/menu.d/luci-app-watchcat.json"
 # control-wol
-sed -i 's/admin\/services/admin\/control/' "feeds/luci/applications/luci-app-wol/root/usr/share/luci/menu.d/luci-app-wol.json"
-# control-appfilter
-sed -i 's/"admin", "network"/"admin", "control"/g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua"
+sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-wol/root/usr/share/luci/menu.d/luci-app-wol.json"
+# control-openappfilter
+sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua"
 # control-nftqos
 sed -i 's|"admin", "services"|"admin", "control"|g' "feeds/luci/applications/luci-app-nft-qos/luasrc/controller/nft-qos.lua"
 # nas-samba4
-sed -i 's/admin\/services/admin\/nas/' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+sed -i 's|admin/services|admin/nas|' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
 # change luci
 perl -pi -e "s/hostname='OpenWrt'/hostname='XiaomanWrt'/g" package/base-files/files/bin/config_generate
 node insert.js
