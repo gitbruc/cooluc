@@ -223,6 +223,7 @@ fi
 
 # docker daemon
 sed -i "s|^#\(.*option alt_config_file '/etc/docker/daemon.json'.*\)| \1|" feeds/packages/utils/dockerd/files/etc/config/dockerd
+mkdir -p files/etc/docker
 curl -so files/etc/docker/daemon.json $mirror/openwrt/files/etc/docker/daemon.json
 
 # cgroupfs-mount
