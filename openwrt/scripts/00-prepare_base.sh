@@ -221,6 +221,10 @@ if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
     git clone https://$github/sbwml/packages_utils_runc feeds/packages/utils/runc
 fi
 
+# docker daemon
+sed -i "s|^#\(.*option alt_config_file '/etc/docker/daemon.json'.*\)| \1|" feeds/packages/utils/dockerd/files/etc/config/dockerd
+curl -so files/etc/docker/daemon.json $mirror/openwrt/files/etc/docker/daemon.json
+
 # cgroupfs-mount
 # fix unmount hierarchical mount
 pushd feeds/packages

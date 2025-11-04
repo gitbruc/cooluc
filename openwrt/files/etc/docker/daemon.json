@@ -1,0 +1,60 @@
+{
+  "data-root": "/opt/docker/",
+  "log-level": "warn",
+  "iptables": true,
+  "ip6tables": true,
+  "ipv6": false,
+  "registry-mirrors": [
+    "https://docker.036699.xyz"
+  ],
+  "log-opts": {
+    "max-size": "20m",
+    "max-file": "3"
+  },
+  "default-address-pools": [
+    {
+      "base": "2408:8215:c29:c9e0::/60",
+      "size": 64
+    },
+    {
+      "base": "172.17.0.0/16",
+      "size": 16
+    },
+    {
+      "base": "172.18.0.0/16",
+      "size": 16
+    },
+    {
+      "base": "172.22.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.24.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.25.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.26.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.27.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.29.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.30.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.31.0.0/16",
+      "size": 24
+    }
+  ]
+}
