@@ -132,9 +132,9 @@ fi
 sed -i 's/<%:Up%>/<%:Move up%>/g' feeds/luci/modules/luci-compat/luasrc/view/cbi/tblsection.htm
 sed -i 's/<%:Down%>/<%:Move down%>/g' feeds/luci/modules/luci-compat/luasrc/view/cbi/tblsection.htm
 
-# SQM Translation
-mkdir -p feeds/packages/net/sqm-scripts/patches
-curl -s $mirror/openwrt/patch/sqm/001-help-translation.patch > feeds/packages/net/sqm-scripts/patches/001-help-translation.patch
+# luci-app-sqm
+rm -rf feeds/luci/applications/luci-app-sqm
+git clone https://$gitea/sbwml/luci-app-sqm feeds/luci/applications/luci-app-sqm
 
 # unzip
 rm -rf feeds/packages/utils/unzip
@@ -146,3 +146,5 @@ git clone https://$github/sbwml/package_kernel_tcp-brutal package/kernel/tcp-bru
 # watchcat - clean config
 true > feeds/packages/utils/watchcat/files/watchcat.config
 
+# sqm-scripts
+curl -s $mirror/openwrt/patch/sqm-scripts/Makefile > feeds/packages/net/sqm-scripts/Makefile
