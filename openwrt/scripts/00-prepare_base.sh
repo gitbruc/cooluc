@@ -54,13 +54,7 @@ git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
 git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
 
 # GCC Optimization level -O3
-if [ "$platform" = "x86_64" ]; then
-    curl -s $mirror/openwrt/patch/target-modify_for_x86_64.patch | patch -p1
-elif [ "$platform" = "armv8" ]; then
-    curl -s $mirror/openwrt/patch/target-modify_for_armsr.patch | patch -p1
-else
-    curl -s $mirror/openwrt/patch/target-modify_for_rockchip.patch | patch -p1
-fi
+curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
 
 # DPDK & NUMACTL
 mkdir -p package/new/{dpdk/patches,numactl}
