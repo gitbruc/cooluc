@@ -1,8 +1,8 @@
 {
   "data-root": "/opt/docker/",
   "log-level": "warn",
-  "iptables": true,
-  "ip6tables": true,
+  "iptables": false,
+  "ip6tables": false,
   "ipv6": false,
   "registry-mirrors": [
     "https://docker.036699.xyz"
