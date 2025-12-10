@@ -83,6 +83,7 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS-custom
+CONFIG_PACKAGE_luci-app-rtp2httpd=y
 CONFIG_PACKAGE_nethogs=y
 CONFIG_PACKAGE_luci-app-smartdns=y
 CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
