@@ -5,6 +5,13 @@
   "ip6tables": false,
   "ipv6": false,
   "registry-mirrors": [
+    "https://docker.1ms.run",
+    "https://docker.xuanyuan.me",
+    "https://huecker.io",
+    "https://dockerhub.timeweb.cloud",
+    "https://docker.fxxk.dedyn.io",
+    "https://hub.mirrorify.net",
+    "https://docker.m.daocloud.io", 
     "https://docker.036699.xyz"
   ],
   "log-opts": {
