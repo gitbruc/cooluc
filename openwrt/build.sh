@@ -117,20 +117,37 @@ else
    exit 1
 fi
 
+# print build opt
 echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
+echo -e "${GREEN_COLOR}SCRIPT_URL:${RES} ${BLUE_COLOR}$mirror${RES}\r\n"
 echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
-[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN: $LAN${RES}" || echo -e "${GREEN_COLOR}LAN: 10.0.0.1${RES}"
-[ -n "$ROOT_PASSWORD" ] && echo -e "${GREEN_COLOR}Default Password:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" || echo -e "${GREEN_COLOR}Default Password: (${RES}${YELLOW_COLOR}No password${RES}${GREEN_COLOR})${RES}"
+print_status() {
+    local name="$1"
+    local value="$2"
+    local true_color="${3:-$GREEN_COLOR}"
+    local false_color="${4:-$YELLOW_COLOR}"
+    local newline="${5:-}"
+    if [ "$value" = "y" ]; then
+        echo -e "${GREEN_COLOR}${name}:${RES} ${true_color}true${RES}${newline}"
+    else
+        echo -e "${GREEN_COLOR}${name}:${RES} ${false_color}false${RES}${newline}"
+    fi
+}
+[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 10.0.0.1"
+[ -n "$ROOT_PASSWORD" ] \
+    && echo -e "${GREEN_COLOR}Default Password:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" \
+    || echo -e "${GREEN_COLOR}Default Password:${RES} (${YELLOW_COLOR}No password${RES})"
 [ "$ENABLE_GLIBC" = "y" ] && echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}glibc${RES}" || echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}musl${RES}"
-[ "$ENABLE_DPDK" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_DPDK: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_DPDK:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_MOLD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_MOLD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_MOLD:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_BPF" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_BPF: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_BPF:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LTO" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LTO: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LTO:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LRNG" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LRNG: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LRNG:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LOCAL_KMOD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: false${RES}"
-[ "$BUILD_FAST" = "y" ] && echo -e "${GREEN_COLOR}BUILD_FAST: true${RES}" || echo -e "${GREEN_COLOR}BUILD_FAST:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_CCACHE" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_CCACHE: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_CCACHE:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$MINIMAL_BUILD" = "y" ] && echo -e "${GREEN_COLOR}MINIMAL_BUILD: true${RES}" || echo -e "${GREEN_COLOR}MINIMAL_BUILD: false${RES}"
+print_status "ENABLE_DPDK"       "$ENABLE_DPDK"
+print_status "ENABLE_MOLD"       "$ENABLE_MOLD"
+print_status "ENABLE_BPF"        "$ENABLE_BPF" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LTO"        "$ENABLE_LTO" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LRNG"       "$ENABLE_LRNG" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LOCAL_KMOD" "$ENABLE_LOCAL_KMOD"
+print_status "BUILD_FAST"        "$BUILD_FAST"
+print_status "ENABLE_CCACHE"     "$ENABLE_CCACHE"
+print_status "MINIMAL_BUILD"     "$MINIMAL_BUILD"
+print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
 
 # clean old files
 rm -rf openwrt master
@@ -257,6 +274,12 @@ export ENABLE_LTO=$ENABLE_LTO
 [ "$ENABLE_DPDK" = "y" ] && {
     echo 'CONFIG_PACKAGE_dpdk-tools=y' >> .config
     echo 'CONFIG_PACKAGE_numactl=y' >> .config
+}
+
+# istore
+[ "$ENABLE_ISTORE" = "y" ] && {
+    echo 'CONFIG_PACKAGE_luci-app-store=y' >> .config
+    echo 'CONFIG_PACKAGE_luci-app-quickstart=y' >> .config
 }
 
 # mold
