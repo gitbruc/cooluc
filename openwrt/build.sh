@@ -29,11 +29,7 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
 # script url
-if [ "$isCN" = "CN" ]; then
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-else
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-fi
+export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
 
 # private gitea
 export gitea=git.cooluc.com
@@ -74,10 +70,10 @@ fi
 
 # Source branch
 if [ "$1" = "dev" ]; then
-    export branch=openwrt-24.10
+    export branch=openwrt-25.12
     export version=dev
 elif [ "$1" = "rc2" ]; then
-    latest_release="v$(curl -s $mirror/tags/v24)"
+    latest_release="v$(curl -s $mirror/tags/v25)"
     export branch=$latest_release
     export version=rc2
 fi
@@ -95,6 +91,8 @@ if [ "$USE_GCC13" = y ]; then
 elif [ "$USE_GCC14" = y ]; then
     export USE_GCC14=y gcc_version=14
 elif [ "$USE_GCC15" = y ]; then
+    export USE_GCC15=y gcc_version=15
+else
     export USE_GCC15=y gcc_version=15
 fi
 [ "$ENABLE_MOLD" = y ] && export ENABLE_MOLD=y
@@ -147,7 +145,7 @@ git clone https://$github/immortalwrt/packages master/immortalwrt_packages --dep
 
 if [ -d openwrt ]; then
     cd openwrt
-    curl -Os $mirror/openwrt/patch/key.tar.gz && tar zxf key.tar.gz && rm -f key.tar.gz
+    curl -Os $mirror/openwrt/patch/key2.tar.gz && tar zxf key2.tar.gz && rm -f key2.tar.gz
 else
     echo -e "${RED_COLOR}Failed to download source code${RES}"
     exit 1
@@ -231,9 +229,9 @@ rm -rf ../master
 
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
-    curl -s $mirror/openwrt/24-config-musl-x86 > .config
+    curl -s $mirror/openwrt/25-config-musl-x86 > .config
 elif [ "$platform" = "armv8" ]; then
-    curl -s $mirror/openwrt/24-config-musl-armsr-armv8 > .config
+    curl -s $mirror/openwrt/25-config-musl-armsr-armv8 > .config
 else
     echo -e "${RED_COLOR}Unsupported platform: $platform${RES}"
     exit 1
@@ -241,10 +239,10 @@ fi
 
 # config-common
 if [ "$MINIMAL_BUILD" = "y" ]; then
-    curl -s $mirror/openwrt/24-config-minimal-common >> .config
+    curl -s $mirror/openwrt/25-config-minimal-common >> .config
     echo 'VERSION_TYPE="minimal"' >> package/base-files/files/usr/lib/os-release
 else
-    curl -s $mirror/openwrt/24-config-common >> .config
+    curl -s $mirror/openwrt/25-config-common >> .config
     [ "$platform" = "armv8" ] && sed -i '/DOCKER/Id' .config
 fi
 
@@ -278,10 +276,6 @@ if [ "$ENABLE_LOCAL_KMOD" = "y" ]; then
     echo "CONFIG_TARGET_ROOTFS_LOCAL_PACKAGES=y" >> .config
 fi
 
-# gcc15 patches
-[ "$(whoami)" = "runner" ] && group "patching toolchain"
-curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
-
 # gcc config
 if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
     echo -e "\n# gcc ${gcc_version}" >> .config
@@ -289,7 +283,6 @@ if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
     echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
     echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 fi
-[ "$(whoami)" = "runner" ] && endgroup
 
 # uhttpd
 [ "$ENABLE_UHTTPD" = "y" ] && sed -i '/nginx/d' .config && echo 'CONFIG_PACKAGE_ariang=y' >> .config
@@ -313,7 +306,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
+    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
@@ -367,17 +360,17 @@ if [ "$platform" = "x86_64" ]; then
     if [ "$NO_KMOD" != "y" ]; then
         cp -a bin/targets/x86/*/packages $kmodpkg_name
         rm -f $kmodpkg_name/Packages*
-        cp -a bin/packages/x86_64/base/rtl88*a-firmware*.ipk $kmodpkg_name/
-        cp -a bin/packages/x86_64/base/natflow*.ipk $kmodpkg_name/
+        cp -a bin/packages/x86_64/base/rtl88*a-firmware*.apk $kmodpkg_name/ || true
+        cp -a bin/packages/x86_64/base/natflow*.apk $kmodpkg_name/ || true
         [ "$OPENWRT_CORE" = "y" ] && {
-            cp -a bin/packages/x86_64/base/*3ginfo*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*modemband*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*sms-tool*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*quectel*.ipk $kmodpkg_name/
+            cp -a bin/packages/x86_64/base/*3ginfo*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*modemband*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*sms-tool*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*quectel*.apk $kmodpkg_name/ || true
         }
         [ "$ENABLE_DPDK" = "y" ] && {
-            cp -a bin/packages/x86_64/base/*dpdk*.ipk $kmodpkg_name/ || true
-            cp -a bin/packages/x86_64/base/*numa*.ipk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*dpdk*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*numa*.apk $kmodpkg_name/ || true
         }
         bash kmod-sign $kmodpkg_name
         tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
@@ -393,17 +386,17 @@ elif [ "$platform" = "armv8" ]; then
     if [ "$NO_KMOD" != "y" ]; then
         cp -a bin/targets/armsr/armv8*/packages $kmodpkg_name
         rm -f $kmodpkg_name/Packages*
-        cp -a bin/packages/aarch64_generic/base/rtl88*a-firmware*.ipk $kmodpkg_name/
-        cp -a bin/packages/aarch64_generic/base/natflow*.ipk $kmodpkg_name/
+        cp -a bin/packages/aarch64_generic/base/rtl88*a-firmware*.apk $kmodpkg_name/ || true
+        cp -a bin/packages/aarch64_generic/base/natflow*.apk $kmodpkg_name/ || true
         [ "$OPENWRT_CORE" = "y" ] && {
-            cp -a bin/packages/aarch64_generic/base/*3ginfo*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*modemband*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*sms-tool*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*quectel*.ipk $kmodpkg_name/
+            cp -a bin/packages/aarch64_generic/base/*3ginfo*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*modemband*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*sms-tool*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*quectel*.apk $kmodpkg_name/ || true
         }
         [ "$ENABLE_DPDK" = "y" ] && {
-            cp -a bin/packages/aarch64_generic/base/*dpdk*.ipk $kmodpkg_name/ || true
-            cp -a bin/packages/aarch64_generic/base/*numa*.ipk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*dpdk*.apk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*numa*.apk $kmodpkg_name/ || true
         }
         bash kmod-sign $kmodpkg_name
         tar zcf armv8-$kmodpkg_name.tar.gz $kmodpkg_name

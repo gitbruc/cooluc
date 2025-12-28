@@ -1,15 +1,15 @@
 #!/bin/bash -e
 
-# golang 1.25
+# golang 1.26
 rm -rf feeds/packages/lang/golang
-git clone https://$github/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
+git clone https://$github/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
 # node - prebuilt
 rm -rf feeds/packages/lang/node
 git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
 
 # default settings
-git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-24.10
+git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-25.12
 
 # wwan
 git clone https://$github/sbwml/wwan-packages package/new/wwan --depth=1
@@ -119,6 +119,7 @@ git clone https://github.com/sbwml/luci-app-mentohust package/new/mentohust
 # custom packages
 rm -rf feeds/packages/utils/coremark
 git clone https://$github/sbwml/openwrt_pkgs package/new/custom --depth=1
+rm -rf package/new/custom/ddns-scripts-aliyun
 # coremark - prebuilt with gcc15
 if [ "$platform" = "armv8" ]; then
     curl -s $mirror/openwrt/patch/coremark/coremark.aarch64-16-threads > package/new/custom/coremark/src/musl/coremark.aarch64
