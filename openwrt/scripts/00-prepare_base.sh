@@ -60,11 +60,14 @@ fi
 # Realtek driver - R8168 & R8125 & R8126 & R8152 & R8101 & r8127
 rm -rf package/kernel/{r8168,r8101,r8125,r8126,r8127}
 git clone https://$github/sbwml/package_kernel_r8168 package/kernel/r8168
-git clone https://github.com/gitbruc/package_kernel_r8152.git package/kernel/r8152
+git clone https://$github/sbwml/package_kernel_r8152 package/kernel/r8152
 git clone https://$github/sbwml/package_kernel_r8101 package/kernel/r8101
 git clone https://$github/sbwml/package_kernel_r8125 package/kernel/r8125
 git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
 git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
+
+# fix r8152
+sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-lib-phy/g' package/kernel/r8152/Makefile
 
 # GCC Optimization level -O3
 curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
