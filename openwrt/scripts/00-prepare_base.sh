@@ -67,7 +67,7 @@ git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
 git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
 
 # fix r8152
-sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-lib-phy/g' package/kernel/r8152/Makefile
+sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/kernel/r8152/Makefile
 
 # GCC Optimization level -O3
 curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
