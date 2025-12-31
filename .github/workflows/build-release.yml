@@ -163,6 +163,7 @@ jobs:
           cp -a openwrt/bin/targets/x86/*/*-generic-rootfs.tar.gz rom/
           cp -a openwrt/bin/targets/x86/*/*-x86-64-generic.manifest rom/manifest.txt
           cp -a openwrt/bin/targets/x86/*/config.buildinfo rom/config.buildinfo
+          cp -a openwrt/.config rom/.config
           cd rom && sha256sum *gz > ../info/sha256sums.txt
         elif [ "${{ github.event.inputs.device }}" = "armv8" ]; then
           tar zcf rom/u-boot-qemu_armv8.tar.gz -C openwrt/bin/targets/armsr/armv8*/ ./u-boot-qemu_armv8
