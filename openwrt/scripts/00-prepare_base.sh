@@ -122,7 +122,7 @@ fi
 git clone https://github.com/gitbruc/nft-fullcone.git package/new/nft-fullcone
 
 # IPv6 NAT
-git clone https://$github/sbwml/packages_new_nat6 package/new/nat6
+git clone https://$github/sbwml/packages_new_nat6 package/new/nat6 -b openwrt-25.12
 
 # natflow
 git clone https://$github/sbwml/package_new_natflow package/new/natflow
