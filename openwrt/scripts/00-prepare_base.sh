@@ -50,11 +50,11 @@ if [ "$ENABLE_UHTTPD" != "y" ]; then
 fi
 
 # drop attendedsysupgrade
-#sed -i '/luci-app-attendedsysupgrade/d' \
-#    feeds/luci/collections/luci-nginx/Makefile \
-#    feeds/luci/collections/luci-ssl-openssl/Makefile \
-#    feeds/luci/collections/luci-ssl/Makefile \
-#    feeds/luci/collections/luci/Makefile
+sed -i '/luci-app-attendedsysupgrade/d' \
+    feeds/luci/collections/luci-nginx/Makefile \
+    feeds/luci/collections/luci-ssl-openssl/Makefile \
+    feeds/luci/collections/luci-ssl/Makefile \
+    feeds/luci/collections/luci/Makefile
 
 
 # Realtek driver - R8168 & R8125 & R8126 & R8152 & R8101 & r8127
