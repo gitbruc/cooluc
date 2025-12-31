@@ -156,6 +156,13 @@ jobs:
       working-directory: /builder
       run: |
         mkdir -p rom info
+        # 在复制前检查文件是否存在
+        if [ ! -f openwrt/.config ]; then
+            echo "Error: openwrt/.config does not exist!"
+        else
+            echo "Config file found, copying..."
+        fi
+        #
         if [ "${{ github.event.inputs.device }}" = "x86_64" ]; then
           cp -a openwrt/bin/targets/x86/*/*-ext4-combined-efi.img.gz rom/
           cp -a openwrt/bin/targets/x86/*/*-squashfs-combined-efi.img.gz rom/
@@ -163,8 +170,9 @@ jobs:
           cp -a openwrt/bin/targets/x86/*/*-generic-rootfs.tar.gz rom/
           cp -a openwrt/bin/targets/x86/*/*-x86-64-generic.manifest rom/manifest.txt
           cp -a openwrt/bin/targets/x86/*/config.buildinfo rom/config.buildinfo
-          cp -a openwrt/.config rom/.config
+          cp -a openwrt/.config rom/config.txt
           cd rom && sha256sum *gz > ../info/sha256sums.txt
+          ls -R rom/
         elif [ "${{ github.event.inputs.device }}" = "armv8" ]; then
           tar zcf rom/u-boot-qemu_armv8.tar.gz -C openwrt/bin/targets/armsr/armv8*/ ./u-boot-qemu_armv8
           cp -a openwrt/bin/targets/armsr/armv8*/*-generic-initramfs-kernel.bin rom/
