@@ -6,7 +6,7 @@ git clone https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smar
 git clone https://github.com/gitbruc/luci-app-smartdns.git package/new/luci-app-smartdns
 
 sed -i 's/227eef2dfffb56445145e7b8a76f6d6fa678ce3e99aceec58f7d35564f4cfafd/4401734712dd034eb1088ce440d1bc64d053dfcd6f63f66c08cd48ab68593042/g' feeds/packages/net/smartdns/Makefile
-sed -i 's/609fec024396a3a26278ef9fe7bd49aeca478e3163fc53c699a5f402fa0320f0/5106f221543bc8afd8c1100e5587c51a76d8d6d3e6acebeb4dfb84291899e0f6/g' feeds/packages/net/smartdns/Makefile
+sed -i 's/609fec024396a3a26278ef9fe7bd49aeca478e3163fc53c699a5f402fa0320f0/f8bfb91ae0992dd62392ebb2b7d968d514f7cbc3cc6a5d975dafdd6b27bf0a0c/g' feeds/packages/net/smartdns/Makefile
 
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
