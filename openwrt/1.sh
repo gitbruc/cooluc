@@ -29,11 +29,7 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
 # script url
-if [ "$isCN" = "CN" ]; then
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-else
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-fi
+export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
 
 # private gitea
 export gitea=git.cooluc.com
@@ -47,8 +43,7 @@ fi
 
 # Check root
 if [ "$(id -u)" = "0" ]; then
-    echo -e "${RED_COLOR}Building with root user is not supported.${RES}"
-    exit 1
+    export FORCE_UNSAFE_CONFIGURE=1 FORCE=1
 fi
 
 # Start time
@@ -75,10 +70,10 @@ fi
 
 # Source branch
 if [ "$1" = "dev" ]; then
-    export branch=openwrt-24.10
+    export branch=openwrt-25.12
     export version=dev
 elif [ "$1" = "rc2" ]; then
-    latest_release="v$(curl -s $mirror/tags/v24)"
+    latest_release="v$(curl -s $mirror/tags/v25)"
     export branch=$latest_release
     export version=rc2
 fi
@@ -98,7 +93,7 @@ elif [ "$USE_GCC14" = y ]; then
 elif [ "$USE_GCC15" = y ]; then
     export USE_GCC15=y gcc_version=15
 else
-    export USE_GCC13=y gcc_version=13
+    export USE_GCC15=y gcc_version=15
 fi
 [ "$ENABLE_MOLD" = y ] && export ENABLE_MOLD=y
 
@@ -107,6 +102,7 @@ export \
     ENABLE_BPF=$ENABLE_BPF \
     ENABLE_DPDK=$ENABLE_DPDK \
     ENABLE_LRNG=$ENABLE_LRNG \
+    ROOT_PASSWORD=$ROOT_PASSWORD
 
 # print version
 echo -e "\r\n${GREEN_COLOR}Building $branch${RES}\r\n"
@@ -121,19 +117,37 @@ else
    exit 1
 fi
 
+# print build opt
 echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
+echo -e "${GREEN_COLOR}SCRIPT_URL:${RES} ${BLUE_COLOR}$mirror${RES}\r\n"
 echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
-[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN: $LAN${RES}" || echo -e "${GREEN_COLOR}LAN: 10.0.0.1${RES}"
+print_status() {
+    local name="$1"
+    local value="$2"
+    local true_color="${3:-$GREEN_COLOR}"
+    local false_color="${4:-$YELLOW_COLOR}"
+    local newline="${5:-}"
+    if [ "$value" = "y" ]; then
+        echo -e "${GREEN_COLOR}${name}:${RES} ${true_color}true${RES}${newline}"
+    else
+        echo -e "${GREEN_COLOR}${name}:${RES} ${false_color}false${RES}${newline}"
+    fi
+}
+[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 10.0.0.1"
+[ -n "$ROOT_PASSWORD" ] \
+    && echo -e "${GREEN_COLOR}Default Password:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" \
+    || echo -e "${GREEN_COLOR}Default Password:${RES} (${YELLOW_COLOR}No password${RES})"
 [ "$ENABLE_GLIBC" = "y" ] && echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}glibc${RES}" || echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}musl${RES}"
-[ "$ENABLE_DPDK" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_DPDK: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_DPDK:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_MOLD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_MOLD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_MOLD:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_BPF" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_BPF: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_BPF:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LTO" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LTO: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LTO:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LRNG" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LRNG: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LRNG:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LOCAL_KMOD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: false${RES}"
-[ "$BUILD_FAST" = "y" ] && echo -e "${GREEN_COLOR}BUILD_FAST: true${RES}" || echo -e "${GREEN_COLOR}BUILD_FAST:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_CCACHE" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_CCACHE: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_CCACHE:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$MINIMAL_BUILD" = "y" ] && echo -e "${GREEN_COLOR}MINIMAL_BUILD: true${RES}" || echo -e "${GREEN_COLOR}MINIMAL_BUILD: false${RES}"
+print_status "ENABLE_DPDK"       "$ENABLE_DPDK"
+print_status "ENABLE_MOLD"       "$ENABLE_MOLD"
+print_status "ENABLE_BPF"        "$ENABLE_BPF" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LTO"        "$ENABLE_LTO" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LRNG"       "$ENABLE_LRNG" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LOCAL_KMOD" "$ENABLE_LOCAL_KMOD"
+print_status "BUILD_FAST"        "$BUILD_FAST"
+print_status "ENABLE_CCACHE"     "$ENABLE_CCACHE"
+print_status "MINIMAL_BUILD"     "$MINIMAL_BUILD"
+print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
 
 # clean old files
 rm -rf openwrt master
@@ -148,7 +162,7 @@ git clone https://$github/immortalwrt/packages master/immortalwrt_packages --dep
 
 if [ -d openwrt ]; then
     cd openwrt
-    curl -Os $mirror/openwrt/patch/key.tar.gz && tar zxf key.tar.gz && rm -f key.tar.gz
+    curl -Os $mirror/openwrt/patch/key2.tar.gz && tar zxf key2.tar.gz && rm -f key2.tar.gz
 else
     echo -e "${RED_COLOR}Failed to download source code${RES}"
     exit 1
@@ -232,9 +246,9 @@ rm -rf ../master
 
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
-    curl -s $mirror/openwrt/24-config-musl-x86 > .config
+    curl -s $mirror/openwrt/25-config-musl-x86 > .config
 elif [ "$platform" = "armv8" ]; then
-    curl -s $mirror/openwrt/24-config-musl-armsr-armv8 > .config
+    curl -s $mirror/openwrt/25-config-musl-armsr-armv8 > .config
 else
     echo -e "${RED_COLOR}Unsupported platform: $platform${RES}"
     exit 1
@@ -242,10 +256,10 @@ fi
 
 # config-common
 if [ "$MINIMAL_BUILD" = "y" ]; then
-    [ "$platform" != "bcm53xx" ] && curl -s $mirror/openwrt/24-config-minimal-common >> .config
+    curl -s $mirror/openwrt/25-config-minimal-common >> .config
     echo 'VERSION_TYPE="minimal"' >> package/base-files/files/usr/lib/os-release
 else
-    [ "$platform" != "bcm53xx" ] && curl -s $mirror/openwrt/24-config-common >> .config
+    curl -s $mirror/openwrt/25-config-common >> .config
     [ "$platform" = "armv8" ] && sed -i '/DOCKER/Id' .config
 fi
 
@@ -260,6 +274,12 @@ export ENABLE_LTO=$ENABLE_LTO
 [ "$ENABLE_DPDK" = "y" ] && {
     echo 'CONFIG_PACKAGE_dpdk-tools=y' >> .config
     echo 'CONFIG_PACKAGE_numactl=y' >> .config
+}
+
+# istore
+[ "$ENABLE_ISTORE" = "y" ] && {
+    echo 'CONFIG_PACKAGE_luci-app-store=y' >> .config
+    echo 'CONFIG_PACKAGE_luci-app-quickstart=y' >> .config
 }
 
 # mold
@@ -279,16 +299,13 @@ if [ "$ENABLE_LOCAL_KMOD" = "y" ]; then
     echo "CONFIG_TARGET_ROOTFS_LOCAL_PACKAGES=y" >> .config
 fi
 
-# gcc15 patches
-[ "$(whoami)" = "runner" ] && group "patching toolchain"
-curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
-
 # gcc config
-echo -e "\n# gcc ${gcc_version}" >> .config
-echo -e "CONFIG_DEVEL=y" >> .config
-echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
-echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
-[ "$(whoami)" = "runner" ] && endgroup
+if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
+    echo -e "\n# gcc ${gcc_version}" >> .config
+    echo -e "CONFIG_DEVEL=y" >> .config
+    echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
+    echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
+fi
 
 # uhttpd
 [ "$ENABLE_UHTTPD" = "y" ] && sed -i '/nginx/d' .config && echo 'CONFIG_PACKAGE_ariang=y' >> .config
@@ -312,7 +329,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
+    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
