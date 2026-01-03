@@ -36,7 +36,7 @@ on:
       build_options:
         description: 'Build options (separate multiple options with spaces)'
         required: false
-        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y ENABLE_DPDK=y USE_GCC15=y NO_KMOD=y'
+        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y ENABLE_DPDK=y USE_GCC15=y'
         type: string
 
 jobs:
@@ -164,6 +164,7 @@ jobs:
           cp -a openwrt/bin/targets/x86/*/*-x86-64-generic.manifest rom/manifest.txt
           cp -a openwrt/bin/targets/x86/*/config.buildinfo rom/config.buildinfo
           cp -a openwrt/.config rom/config.txt
+          cp -a openwrt/x86_64-kmodpkg.tar.gz rom/ || echo "Kmod archive not found"
           cd rom && sha256sum *gz > ../info/sha256sums.txt
         elif [ "${{ github.event.inputs.device }}" = "armv8" ]; then
           tar zcf rom/u-boot-qemu_armv8.tar.gz -C openwrt/bin/targets/armsr/armv8*/ ./u-boot-qemu_armv8
