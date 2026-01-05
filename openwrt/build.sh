@@ -406,23 +406,17 @@ fi
 
 # Toolchain Cache
 if [ "$BUILD_FAST" = "y" ]; then
-    [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
-    [ "$isCN" = "CN" ] && github_proxy="ghp.ci/" || github_proxy=""
-    echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    PLATFORM_ID=""
-    [ -f /etc/os-release ] && source /etc/os-release
-    if [ "$PLATFORM_ID" = "platform:el9" ]; then
-        TOOLCHAIN_URL="http://127.0.0.1:8080"
-    else
-        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
-    fi
-    curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
-    echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
-    tar -I "zstd" -xf toolchain.tar.zst
-    rm -f toolchain.tar.zst
-    mkdir bin
-    find ./staging_dir/ -name '*' -exec touch {} \; >/dev/null 2>&1
-    find ./tmp/ -name '*' -exec touch {} \; >/dev/null 2>&1
+    [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
+    [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
+    echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
+    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
+    curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
+    echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
+    tar -I "zstd" -xf toolchain.tar.zst
+    rm -f toolchain.tar.zst
+    mkdir bin
+    find ./staging_dir/ -name '*' -exec touch {} \; >/dev/null 2>&1
+    find ./tmp/ -name '*' -exec touch {} \; >/dev/null 2>&1
 fi
 
 # init openwrt config
