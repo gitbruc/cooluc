@@ -14,7 +14,7 @@ CONFIG_LIBCURL_OPENSSL=y
 CONFIG_PACKAGE_nat6=y
 
 # Natflow
-CONFIG_PACKAGE_natflow=m
+CONFIG_PACKAGE_natflow=y
 
 # SFE
 # CONFIG_PACKAGE_kmod-fast-classifier is not set
