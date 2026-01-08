@@ -123,13 +123,15 @@ sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/htdocs/lu
 git clone https://github.com/sbwml/luci-app-mentohust package/new/mentohust
 
 # custom packages
-rm -rf feeds/packages/utils/coremark
+# rm -rf feeds/packages/utils/coremark
 git clone https://$github/sbwml/openwrt_pkgs package/new/custom --depth=1
 rm -rf package/new/custom/ddns-scripts-aliyun
+rm -rf package/new/custom/luci-app-adguardhome
+rm -rf package/new/custom/coremark
 # coremark - prebuilt with gcc15
-if [ "$platform" = "armv8" ]; then
-    curl -s $mirror/openwrt/patch/coremark/coremark.aarch64-16-threads > package/new/custom/coremark/src/musl/coremark.aarch64
-fi
+#if [ "$platform" = "armv8" ]; then
+#    curl -s $mirror/openwrt/patch/coremark/coremark.aarch64-16-threads > package/new/custom/coremark/src/musl/coremark.aarch64
+#fi
 
 # luci-compat - fix translation
 sed -i 's/<%:Up%>/<%:Move up%>/g' feeds/luci/modules/luci-compat/luasrc/view/cbi/tblsection.htm
