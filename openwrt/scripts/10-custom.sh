@@ -8,6 +8,7 @@ git clone https://github.com/gitbruc/luci-app-smartdns.git package/new/luci-app-
 sed -i 's/227eef2dfffb56445145e7b8a76f6d6fa678ce3e99aceec58f7d35564f4cfafd/4401734712dd034eb1088ce440d1bc64d053dfcd6f63f66c08cd48ab68593042/g' feeds/packages/net/smartdns/Makefile
 sed -i 's/609fec024396a3a26278ef9fe7bd49aeca478e3163fc53c699a5f402fa0320f0/f8bfb91ae0992dd62392ebb2b7d968d514f7cbc3cc6a5d975dafdd6b27bf0a0c/g' feeds/packages/net/smartdns/Makefile
 
+
 # fanchmwrt
 # 1. 克隆 fanchmwrt 仓库到临时目录 (使用 --depth 1 减少下载量)
 git clone --depth 1 https://github.com/fanchmwrt/fanchmwrt.git /tmp/fanchmwrt
@@ -19,9 +20,10 @@ rm -rf /tmp/fanchmwrt
 chmod -R 755 package/fcm
 # patch
 curl -s https://raw.githubusercontent.com/fanchmwrt/fanchmwrt/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch > target/linux/generic/pending-6.12/999-fwx-kernel-hook.patch
-
 # fanchmwrt-packages
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new/fanchmwrt-packages
+
+
 # adguardhome
 git clone https://github.com/w9315273/luci-app-adguardhome.git package/new/luci-app-adguardhome
 # wrtbwmon
