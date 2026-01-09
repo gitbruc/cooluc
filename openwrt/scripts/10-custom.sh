@@ -17,6 +17,8 @@ cp -r /tmp/fanchmwrt/package/fcm package/
 rm -rf /tmp/fanchmwrt
 # 4. (可选) 修正权限，防止脚本没有执行权限
 chmod -R 755 package/fcm
+# patch
+curl -s https://raw.githubusercontent.com/fanchmwrt/fanchmwrt/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch > target/linux/generic/pending-6.12/999-fwx-kernel-hook.patch
 
 # fanchmwrt-packages
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new/fanchmwrt-packages
