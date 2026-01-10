@@ -36,7 +36,7 @@ on:
       build_options:
         description: 'Build options (separate multiple options with spaces)'
         required: false
-        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y ENABLE_DPDK=y USE_GCC15=y'
+        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y USE_GCC15=y'
         type: string
 
 jobs:
