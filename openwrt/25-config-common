@@ -89,7 +89,7 @@ CONFIG_PACKAGE_luci-app-fwx-dashboard-setting=y
 CONFIG_PACKAGE_luci-app-fwx-dashboard=y
 CONFIG_PACKAGE_luci-app-fwx-feature=y
 CONFIG_PACKAGE_luci-app-fwx-macfilter=y
-CONFIG_PACKAGE_luci-app-fwx-network=y
+# CONFIG_PACKAGE_luci-app-fwx-network is not set
 CONFIG_PACKAGE_luci-app-fwx-record=y
 CONFIG_PACKAGE_luci-app-fwx-resources=y
 CONFIG_PACKAGE_luci-app-fwx-system=y
@@ -120,7 +120,7 @@ CONFIG_GRUB_TITLE="XiaomanWrt"
 CONFIG_PACKAGE_luci-app-taskplan=y
 CONFIG_PACKAGE_luci-i18n-taskplan-zh-cn=y
 CONFIG_PACKAGE_tailscale=y
-CONFIG_PACKAGE_luci-app-onliner=y
+# CONFIG_PACKAGE_luci-app-onliner is not set
 CONFIG_PACKAGE_luci-app-wol=y
 # CONFIG_GRUB_IMAGES is not set
 CONFIG_TARGET_ROOTFS_EXT4FS=y
