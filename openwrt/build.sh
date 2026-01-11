@@ -102,6 +102,7 @@ export \
     ENABLE_BPF=$ENABLE_BPF \
     ENABLE_DPDK=$ENABLE_DPDK \
     ENABLE_LRNG=$ENABLE_LRNG \
+    KERNEL_CLANG_LTO=$KERNEL_CLANG_LTO \
     ROOT_PASSWORD=$ROOT_PASSWORD
 
 # print version
@@ -148,6 +149,7 @@ print_status "BUILD_FAST"        "$BUILD_FAST"
 print_status "ENABLE_CCACHE"     "$ENABLE_CCACHE"
 print_status "MINIMAL_BUILD"     "$MINIMAL_BUILD"
 print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
+print_status "KERNEL_CLANG_LTO"  "$KERNEL_CLANG_LTO" "$GREEN_COLOR" "$YELLOW_COLOR" "\n"
 
 # clean old files
 rm -rf openwrt master
@@ -285,6 +287,18 @@ export ENABLE_LTO=$ENABLE_LTO
 # mold
 [ "$ENABLE_MOLD" = "y" ] && echo 'CONFIG_USE_MOLD=y' >> .config
 
+# kernel - CLANG + LTO; Allow CONFIG_KERNEL_CC=clang / clang-18 / clang-xx
+if [ "$KERNEL_CLANG_LTO" = "y" ]; then
+    echo '# Kernel - CLANG LTO' >> .config
+    if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
+        echo 'CONFIG_KERNEL_CC="ccache clang"' >> .config
+    else
+        echo 'CONFIG_KERNEL_CC="clang"' >> .config
+    fi
+    echo 'CONFIG_EXTRA_OPTIMIZATION=""' >> .config
+    echo '# CONFIG_PACKAGE_kselftests-bpf is not set' >> .config
+fi
+
 # kernel - enable LRNG
 if [ "$ENABLE_LRNG" = "y" ]; then
     echo -e "\n# Kernel - LRNG" >> .config
@@ -300,12 +314,10 @@ if [ "$ENABLE_LOCAL_KMOD" = "y" ]; then
 fi
 
 # gcc config
-if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
-    echo -e "\n# gcc ${gcc_version}" >> .config
-    echo -e "CONFIG_DEVEL=y" >> .config
-    echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
-    echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
-fi
+echo -e "\n# gcc ${gcc_version}" >> .config
+echo -e "CONFIG_DEVEL=y" >> .config
+echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
+echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 
 # uhttpd
 [ "$ENABLE_UHTTPD" = "y" ] && sed -i '/nginx/d' .config && echo 'CONFIG_PACKAGE_ariang=y' >> .config
@@ -329,7 +341,13 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
+    PLATFORM_ID=""
+    [ -f /etc/os-release ] && source /etc/os-release
+    if [ "$PLATFORM_ID" = "platform:el9" ]; then
+        TOOLCHAIN_URL="http://127.0.0.1:8080"
+    else
+        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
+    fi
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
