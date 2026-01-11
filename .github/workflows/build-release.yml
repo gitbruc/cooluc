@@ -36,7 +36,7 @@ on:
       build_options:
         description: 'Build options (separate multiple options with spaces)'
         required: false
-        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y USE_GCC15=y KERNEL_CLANG_LTO=y BUILD_FAST=y'
+        default: 'ENABLE_BPF=y ENABLE_LTO=y ENABLE_LRNG=y ENABLE_MOLD=y USE_GCC15=y BUILD_FAST=y'
         type: string
 
 jobs:

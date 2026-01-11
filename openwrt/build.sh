@@ -378,7 +378,6 @@ else
     echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
-    yes "" | make target/linux/compile -j1 V=s
     make -j$cores V=s IGNORE_ERRORS="n m"
 fi
 
