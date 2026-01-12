@@ -25,7 +25,7 @@ git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new/fanchm
 
 
 # adguardhome
-git clone https://github.com/w9315273/luci-app-adguardhome.git package/new/luci-app-adguardhome
+git clone https://github.com/gitbruc/luci-app-adguardhome package/new/luci-app-adguardhome
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
 # onliner
