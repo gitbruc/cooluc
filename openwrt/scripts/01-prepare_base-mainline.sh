@@ -119,12 +119,6 @@ pushd target/linux/generic/hack-6.12
     curl -Os $mirror/openwrt/patch/kernel-6.12/linux-rt/012-0008-Revert-drm-i915-Depend-on-PREEMPT_RT.patch
 popd
 
-# mt76
-rm -rf package/kernel/mt76
-mkdir -p package/kernel/mt76/patches
-curl -s $mirror/openwrt/patch/mt76/Makefile > package/kernel/mt76/Makefile
-curl -s $mirror/openwrt/patch/mt76/patches/101-fix-build-with-linux-6.12rc2.patch > package/kernel/mt76/patches/101-fix-build-with-linux-6.12rc2.patch
-
 # kernel patch
 # btf: silence btf module warning messages
 curl -s $mirror/openwrt/patch/kernel-6.12/btf/990-btf-silence-btf-module-warning-messages.patch > target/linux/generic/hack-6.12/990-btf-silence-btf-module-warning-messages.patch
