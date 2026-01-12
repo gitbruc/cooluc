@@ -24,8 +24,6 @@ curl -s https://raw.githubusercontent.com/fanchmwrt/fanchmwrt/fanchmwrt-24.10.4/
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new/fanchmwrt-packages
 
 
-# adguardhome
-git clone https://github.com/gitbruc/luci-app-adguardhome package/new/luci-app-adguardhome
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
 # onliner
