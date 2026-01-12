@@ -72,6 +72,9 @@ sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/
 # GCC Optimization level -O3
 curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
 
+# libubox
+sed -i '/TARGET_CFLAGS/ s/$/ -Os/' package/libs/libubox/Makefile
+
 # DPDK & NUMACTL
 mkdir -p package/new/{dpdk/patches,numactl}
 curl -s $mirror/openwrt/patch/dpdk/dpdk/Makefile > package/new/dpdk/Makefile
@@ -87,9 +90,8 @@ git clone https://$github/sbwml/package_system_fstools -b openwrt-25.12 package/
 rm -rf package/utils/util-linux
 git clone https://$github/sbwml/package_utils_util-linux -b openwrt-25.12 package/utils/util-linux
 
-
-
-
+# Shortcut Forwarding Engine
+git clone https://$gitea/sbwml/shortcut-fe package/new/shortcut-fe
 
 # Patch FireWall 4
 if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
@@ -119,7 +121,7 @@ if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
 fi
 
 # FullCone module
-git clone https://github.com/gitbruc/nft-fullcone.git package/new/nft-fullcone
+git clone https://$gitea/sbwml/nft-fullcone package/new/nft-fullcone
 
 # IPv6 NAT
 git clone https://$github/sbwml/packages_new_nat6 package/new/nat6 -b openwrt-25.12
