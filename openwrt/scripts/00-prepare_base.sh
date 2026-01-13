@@ -65,7 +65,6 @@ git clone https://$github/sbwml/package_kernel_r8101 package/kernel/r8101
 git clone https://$github/sbwml/package_kernel_r8125 package/kernel/r8125
 git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
 git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
-
 # fix r8152
 sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/kernel/r8152/Makefile
 
@@ -150,12 +149,12 @@ if [ "$ENABLE_LTO" = "y" ]; then
 fi
 
 # nghttp3
-rm -rf feeds/packages/libs/nghttp3
-git clone https://$github/sbwml/package_libs_nghttp3 package/libs/nghttp3
+# rm -rf feeds/packages/libs/nghttp3
+# git clone https://$github/sbwml/package_libs_nghttp3 package/libs/nghttp3
 
 # ngtcp2
-rm -rf feeds/packages/libs/ngtcp2
-git clone https://$github/sbwml/package_libs_ngtcp2 package/libs/ngtcp2
+# rm -rf feeds/packages/libs/ngtcp2
+# git clone https://$github/sbwml/package_libs_ngtcp2 package/libs/ngtcp2
 
 # curl - fix passwall `time_pretransfer` check
 rm -rf feeds/packages/net/curl
@@ -178,7 +177,7 @@ mkdir -p files/etc/docker
 curl -so files/etc/docker/daemon.json $mirror/openwrt/files/etc/docker/daemon.json
 
 # procps-ng - top
-sed -i 's/enable-skill/enable-skill --disable-modern-top/g' feeds/packages/utils/procps-ng/Makefile
+# sed -i 's/enable-skill/enable-skill --disable-modern-top/g' feeds/packages/utils/procps-ng/Makefile
 
 # TTYD
 sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
@@ -206,9 +205,9 @@ curl -s $mirror/openwrt/nginx/uci.conf.template > feeds/packages/net/nginx-util/
 curl -s $mirror/openwrt/nginx/nginx.config > feeds/packages/net/nginx-util/files/nginx.config
 
 # opkg
-mkdir -p package/system/opkg/patches
-curl -s $mirror/openwrt/patch/opkg/900-opkg-download-disable-hsts.patch > package/system/opkg/patches/900-opkg-download-disable-hsts.patch
-curl -s $mirror/openwrt/patch/opkg/901-libopkg-opkg_install-copy-conffiles-to-the-system-co.patch > package/system/opkg/patches/901-libopkg-opkg_install-copy-conffiles-to-the-system-co.patch
+# mkdir -p package/system/opkg/patches
+# curl -s $mirror/openwrt/patch/opkg/900-opkg-download-disable-hsts.patch > package/system/opkg/patches/900-opkg-download-disable-hsts.patch
+# curl -s $mirror/openwrt/patch/opkg/901-libopkg-opkg_install-copy-conffiles-to-the-system-co.patch > package/system/opkg/patches/901-libopkg-opkg_install-copy-conffiles-to-the-system-co.patch
 
 # uwsgi - fix timeout
 sed -i '$a cgi-timeout = 600' feeds/packages/net/uwsgi/files-luci-support/luci-*.ini
@@ -243,13 +242,13 @@ sed -i "s/openwrt.org/www.baidu.com/g" feeds/luci/modules/luci-mod-network/htdoc
 sed -i '/<br \/>/d' feeds/luci/modules/luci-compat/luasrc/view/cbi/full_valuefooter.htm
 
 # urngd - 2020-01-21
-rm -rf package/system/urngd
-git clone https://$github/sbwml/package_system_urngd package/system/urngd
+# rm -rf package/system/urngd
+# git clone https://$github/sbwml/package_system_urngd package/system/urngd
 
 # zlib - 1.3
-ZLIB_VERSION=1.3.1
-ZLIB_HASH=38ef96b8dfe510d42707d9c781877914792541133e1870841463bfa73f883e32
-sed -ri "s/(PKG_VERSION:=)[^\"]*/\1$ZLIB_VERSION/;s/(PKG_HASH:=)[^\"]*/\1$ZLIB_HASH/" package/libs/zlib/Makefile
+# ZLIB_VERSION=1.3.1
+# ZLIB_HASH=38ef96b8dfe510d42707d9c781877914792541133e1870841463bfa73f883e32
+# sed -ri "s/(PKG_VERSION:=)[^\"]*/\1$ZLIB_VERSION/;s/(PKG_HASH:=)[^\"]*/\1$ZLIB_HASH/" package/libs/zlib/Makefile
 
 # profile
 sed -i 's#\\u@\\h:\\w\\\$#\\[\\e[32;1m\\][\\u@\\h\\[\\e[0m\\] \\[\\033[01;34m\\]\\W\\[\\033[00m\\]\\[\\e[32;1m\\]]\\[\\e[0m\\]\\\$#g' package/base-files/files/etc/profile
