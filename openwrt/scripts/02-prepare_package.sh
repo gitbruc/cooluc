@@ -89,12 +89,9 @@ git clone https://$github/sbwml/package_new_ftp package/new/ftp
 # nethogs
 git clone https://$github/sbwml/package_new_nethogs package/new/nethogs
 
-# SSRP & Passwall
+# helloworld
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
 git clone https://$github/sbwml/openwrt_helloworld package/new/helloworld -b v5
-# fix hash
-sed -i 's/6016f70297e7d63d2347e3ba0362ccc107c90a7f62b86cb4ee36ae4dab3eec42/c814c9b2e6c92e08d3db929792c56e2863a1a0e252c774ec048095efea6b67a1/g' package/new/helloworld/xray-core/Makefile
-
 
 # openlist
 git clone https://$github/sbwml/luci-app-openlist2 package/new/openlist --depth=1

@@ -223,27 +223,23 @@ curl -sO $mirror/openwrt/scripts/05-fix-source.sh
 curl -sO $mirror/openwrt/scripts/99_clean_build_cache.sh
 curl -sO $mirror/openwrt/scripts/insert.js
 curl -sO $mirror/openwrt/scripts/1.png
-#curl -sO https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh
+curl -sO $mirror/openwrt/scripts/10-custom.sh
+curl -sO $mirror/openwrt/scripts/11-fix.sh
 
-if [ -n "$git_password" ] && [ -n "$private_url" ]; then
-    curl -u openwrt:$git_password -sO "$private_url"
-else
-    curl -sO $mirror/openwrt/scripts/10-custom.sh
-fi
 chmod 0755 *sh
 [ "$(whoami)" = "runner" ] && group "patching openwrt"
 bash 00-prepare_base.sh
 bash 01-prepare_base-mainline.sh
 bash 02-prepare_package.sh
-#bash add_turboacc.sh
 bash 03-convert_translation.sh
 bash 04-fix_kmod.sh
 bash 05-fix-source.sh
 [ -f "10-custom.sh" ] && bash 10-custom.sh
+[ -f "11-fix.sh" ] && bash 11-fix.sh
 find feeds -type f -name "*.orig" -exec rm -f {} \;
 [ "$(whoami)" = "runner" ] && endgroup
 
-rm -f 0*-*.sh 10-custom.sh
+rm -f 0*-*.sh 10-custom.sh 11-fix.sh
 rm -rf ../master
 
 # Load devices Config
