@@ -22,8 +22,8 @@ git clone https://$github/timsaya/luci-app-bandix package/new/luci-app-bandix --
 git clone https://$github/sbwml/package_new_istore package/new/istore --depth=1
 
 # luci-app-filemanager
-#rm -rf feeds/luci/applications/luci-app-filemanager
-#git clone https://$github/sbwml/luci-app-filemanager package/new/luci-app-filemanager
+# rm -rf feeds/luci/applications/luci-app-filemanager
+# git clone https://$github/sbwml/luci-app-filemanager package/new/luci-app-filemanager
 
 # luci-app-quickfile
 git clone https://$github/sbwml/luci-app-quickfile package/new/quickfile
@@ -149,6 +149,10 @@ git clone https://$github/sbwml/package_kernel_tcp-brutal package/kernel/tcp-bru
 
 # watchcat - clean config
 true > feeds/packages/utils/watchcat/files/watchcat.config
+
+# libpcap
+# rm -rf package/libs/libpcap
+# git clone https://$github/sbwml/package_libs_libpcap package/libs/libpcap
 
 # sqm-scripts
 curl -s $mirror/openwrt/patch/sqm-scripts/Makefile > feeds/packages/net/sqm-scripts/Makefile

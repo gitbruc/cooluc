@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # odhcp6c-2025-10
-rm -rf package/network/ipv6/odhcp6c
-git clone https://$gitea/sbwml/package_network_ipv6_odhcp6c package/network/ipv6/odhcp6c
-#if [ "$branch" = "v25.12.0-rc1" ]; then
+# rm -rf package/network/ipv6/odhcp6c
+# git clone https://$gitea/sbwml/package_network_ipv6_odhcp6c package/network/ipv6/odhcp6c
+# if [ "$branch" = "v25.12.0-rc1" ]; then
 #    curl -s $mirror/openwrt/patch/odhcp6c/0001-odhcp6c-update-to-25.12-Git-HEAD-2025-12-29.patch | patch -p1
-#fi
+# fi
 
 if [ "$KERNEL_CLANG_LTO" = "y" ]; then 
     # linux-atm
@@ -22,9 +22,6 @@ curl -s $mirror/openwrt/patch/packages-patches/irqbalance/900-meson-add-numa-opt
 
 # libsodium - fix build with lto (GNU BUG - 89147)
 sed -i "/CONFIGURE_ARGS/i\TARGET_CFLAGS += -ffat-lto-objects\n" feeds/packages/libs/libsodium/Makefile
-
-# haproxy - fix build with quictls
-sed -i '/USE_QUIC_OPENSSL_COMPAT/d' feeds/packages/net/haproxy/Makefile
 
 # xdp-tools
 rm -rf package/network/utils/xdp-tools

@@ -2,6 +2,12 @@
 
 # Fix build for 6.12
 
+### BROKEN
+sed -i 's/^\([[:space:]]*DEPENDS:=.*\)$/\1 @BROKEN/' package/kernel/rtl8812au-ct/Makefile
+
+# openvswitch
+sed -i '/ovs_kmod_openvswitch_depends/a\\t\ \ +kmod-sched-act-sample \\' feeds/packages/net/openvswitch/Makefile
+
 # clang
 if [ "$KERNEL_CLANG_LTO" = "y" ]; then
     # xtables-addons module
@@ -23,5 +29,4 @@ else
     [ "$USE_GCC15" = y ] && sed -i '/TARGET_CFLAGS/s/$/ -std=gnu17/' feeds/packages/net/coova-chilli/Makefile
 fi
 
-### BROKEN
-sed -i 's/^\([[:space:]]*DEPENDS:=.*\)$/\1 @BROKEN/' package/kernel/rtl8812au-ct/Makefile
+
