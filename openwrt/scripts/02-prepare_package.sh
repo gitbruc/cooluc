@@ -107,7 +107,7 @@ git clone https://$github/UnblockNeteaseMusic/luci-app-unblockneteasemusic packa
 sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/new/luci-app-unblockneteasemusic/root/usr/share/luci/menu.d/luci-app-unblockneteasemusic.json
 
 # Theme
-git clone https://github.com/gitbruc/luci-theme-argon -b openwrt-25.12 package/new/luci-theme-argon --depth=1
+git clone https://github.com/sbwml/luci-theme-argon -b openwrt-25.12 package/new/luci-theme-argon --depth=1
 
 # OpenAppFilter
 git clone https://github.com/destan19/OpenAppFilter package/new/OpenAppFilter
