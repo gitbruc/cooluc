@@ -19,6 +19,8 @@ curl -s https://raw.githubusercontent.com/fanchmwrt/fanchmwrt/fanchmwrt-24.10.4/
 # fanchmwrt-packages
 git clone https://github.com/gitbruc/fanchmwrt-packages package/new/fanchmwrt-packages
 
+# eqosplus
+git clone https://github.com/sirpdboy/luci-app-eqosplus.git package/new/luci-app-eqosplus
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
 # onliner
