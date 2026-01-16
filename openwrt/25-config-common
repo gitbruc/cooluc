@@ -120,7 +120,7 @@ CONFIG_GRUB_TITLE="XiaomanWrt"
 CONFIG_PACKAGE_luci-app-taskplan=y
 CONFIG_PACKAGE_luci-i18n-taskplan-zh-cn=y
 CONFIG_PACKAGE_tailscale=y
-# CONFIG_PACKAGE_luci-app-onliner is not set
+CONFIG_PACKAGE_luci-app-onliner=y
 CONFIG_PACKAGE_luci-app-wol=y
 CONFIG_TARGET_ROOTFS_EXT4FS=y
 CONFIG_TARGET_ROOTFS_SQUASHFS=y
