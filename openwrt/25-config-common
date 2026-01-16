@@ -94,7 +94,7 @@ CONFIG_PACKAGE_luci-app-fwx-record=y
 CONFIG_PACKAGE_luci-app-fwx-resources=y
 CONFIG_PACKAGE_luci-app-fwx-system=y
 CONFIG_PACKAGE_luci-app-fwx-user=y
-CONFIG_PACKAGE_luci-theme-fanchmwrt=y
+# CONFIG_PACKAGE_luci-theme-fanchmwrt is not set
 
 ### APPS-custom
 CONFIG_PACKAGE_luci-app-bandix=y
