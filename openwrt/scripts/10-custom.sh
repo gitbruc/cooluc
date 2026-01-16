@@ -17,7 +17,7 @@ chmod -R 755 package/fcm
 # patch
 curl -s https://raw.githubusercontent.com/fanchmwrt/fanchmwrt/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch > target/linux/generic/pending-6.12/999-fwx-kernel-hook.patch
 # fanchmwrt-packages
-git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new/fanchmwrt-packages
+git clone https://github.com/gitbruc/fanchmwrt-packages package/new/fanchmwrt-packages
 
 # wrtbwmon
 #git clone https://github.com/gitbruc/openwrt-wrtbwmon.git package/new/luci-app-wrtbwmon
