@@ -332,7 +332,7 @@ if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
     tools_suffix="_ccache"
 fi
 
-# ZSTD compression ()
+# ZSTD compression
 if [ "$ENABLE_SquashFS_ZSTD" = "y" ]; then
     echo "CONFIG_TARGET_ROOTFS_SQUASHFS_ZSTD=y" >> .config
 fi
