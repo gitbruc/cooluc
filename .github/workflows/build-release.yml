@@ -23,6 +23,10 @@ on:
         description: 'Enable ccache (Use Cache to speed up next build)'
         type: boolean
         default: true
+      SquashFS_zstd:
+        description: 'Enable ZSTD compression (SquashFS)'
+        type: boolean
+        default: false
       lan_addr:
         description: 'Setting default LAN address'
         required: true
@@ -94,6 +98,7 @@ jobs:
       run: |
         export ${{ github.event.inputs.build_options }} LAN=${{ github.event.inputs.lan_addr }}
         [ ${{ github.event.inputs.ccache }} = 'true' ] && export ENABLE_CCACHE=y
+        [ ${{ github.event.inputs.SquashFS_zstd }} = 'true' ] && export ENABLE_SquashFS_ZSTD=y
         [ -n ${{ github.event.inputs.root_password }} ] && export ROOT_PASSWORD="${{ github.event.inputs.root_password }}"
         bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) ${{ env.build_version }} ${{ github.event.inputs.device }}
         cd openwrt
