@@ -33,7 +33,7 @@ git clone https://github.com/tty228/luci-app-wechatpush.git package/new/luci-app
 git clone https://github.com/gitbruc/openwrt-BBR.git package/new/luci-app-bbrswitch
 # passwall
 rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
-git clone https://github.com/xiaorouji/openwrt-passwall.git package/new/helloworld/luci-app-passwall
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/new/helloworld/luci-app-passwall
 # luci-app-taskplan
 git clone https://github.com/sirpdboy/luci-app-taskplan.git package/new/luci-app-taskplan
 # control-banip
