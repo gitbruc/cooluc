@@ -271,7 +271,8 @@ curl -so files/root/.bashrc $mirror/openwrt/files/root/.bashrc
 mkdir -p files/etc/sysctl.d
 curl -so files/etc/sysctl.d/10-default.conf $mirror/openwrt/files/etc/sysctl.d/10-default.conf
 curl -so files/etc/sysctl.d/15-vm-swappiness.conf $mirror/openwrt/files/etc/sysctl.d/15-vm-swappiness.conf
-curl -so files/etc/sysctl.d/16-udp-buffer-size.conf $mirror/openwrt/files/etc/sysctl.d/16-udp-buffer-size.conf
+curl -so files/etc/sysctl.d/16-buffer-size.conf $mirror/openwrt/files/etc/sysctl.d/16-buffer-size.conf
+curl -so files/etc/sysctl.d/17-netdev.conf $mirror/openwrt/files/etc/sysctl.d/17-netdev.conf
 
 # NTP
 sed -i 's/0.openwrt.pool.ntp.org/ntp1.aliyun.com/g' package/base-files/files/bin/config_generate
