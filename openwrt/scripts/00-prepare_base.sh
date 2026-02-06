@@ -59,12 +59,12 @@ sed -i '/luci-app-attendedsysupgrade/d' \
 
 # Realtek driver - R8168 & R8125 & R8126 & R8152 & R8101 & r8127
 rm -rf package/kernel/{r8168,r8101,r8125,r8126,r8127}
-git clone https://$github/sbwml/package_kernel_r8168 package/kernel/r8168
-git clone https://$github/sbwml/package_kernel_r8152 package/kernel/r8152
-git clone https://$github/sbwml/package_kernel_r8101 package/kernel/r8101
-git clone https://$github/sbwml/package_kernel_r8125 package/kernel/r8125
-git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
-git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
+git clone https://$github/gitbruc/package_kernel_r8168 package/kernel/r8168
+git clone https://$github/gitbruc/package_kernel_r8152 package/kernel/r8152
+git clone https://$github/gitbruc/package_kernel_r8101 package/kernel/r8101
+git clone https://$github/gitbruc/package_kernel_r8125 package/kernel/r8125
+git clone https://$github/gitbruc/package_kernel_r8126 package/kernel/r8126
+git clone https://$github/gitbruc/package_kernel_r8127 package/kernel/r8127
 # fix r8152
 sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/kernel/r8152/Makefile
 
@@ -84,13 +84,13 @@ curl -s $mirror/openwrt/patch/dpdk/numactl/Makefile > package/new/numactl/Makefi
 
 # fstools
 rm -rf package/system/fstools
-git clone https://$github/sbwml/package_system_fstools -b openwrt-25.12 package/system/fstools
+git clone https://$github/gitbruc/package_system_fstools -b openwrt-25.12 package/system/fstools
 # util-linux
 rm -rf package/utils/util-linux
-git clone https://$github/sbwml/package_utils_util-linux -b openwrt-25.12 package/utils/util-linux
+git clone https://$github/gitbruc/package_utils_util-linux -b openwrt-25.12 package/utils/util-linux
 
 # Shortcut Forwarding Engine
-git clone https://$gitea/sbwml/shortcut-fe package/new/shortcut-fe
+git clone https://github.com/gitbruc/shortcut-fe package/new/shortcut-fe
 
 # Patch FireWall 4
 if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
@@ -123,10 +123,10 @@ fi
 git clone https://github.com/gitbruc/nft-fullcone.git package/new/nft-fullcone
 
 # IPv6 NAT
-git clone https://$github/sbwml/packages_new_nat6 package/new/nat6 -b openwrt-25.12
+git clone https://$github/gitbruc/package_new_nat6 package/new/nat6 -b openwrt-25.12
 
 # natflow
-git clone https://$github/sbwml/package_new_natflow package/new/natflow
+git clone https://$github/gitbruc/package_new_natflow package/new/natflow
 
 # Patch Luci add nft_fullcone/bcm_fullcone & shortcut-fe & natflow & ipv6-nat & custom nft command option
 pushd feeds/luci
@@ -158,17 +158,17 @@ fi
 
 # curl - fix passwall `time_pretransfer` check
 rm -rf feeds/packages/net/curl
-git clone https://$github/sbwml/feeds_packages_net_curl feeds/packages/net/curl
+git clone https://$github/gitbruc/feeds_packages_net_curl feeds/packages/net/curl
 
 # Docker
 rm -rf feeds/luci/applications/luci-app-dockerman
-git clone https://$gitea/sbwml/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
+git clone https://github.com/gitbruc/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
 if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
     rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-    git clone https://$gitea/sbwml/packages_utils_docker feeds/packages/utils/docker
-    git clone https://$gitea/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
-    git clone https://$gitea/sbwml/packages_utils_containerd feeds/packages/utils/containerd
-    git clone https://$gitea/sbwml/packages_utils_runc feeds/packages/utils/runc
+    git clone https://github.com/gitbruc/packages_utils_docker feeds/packages/utils/docker
+    git clone https://github.com/gitbruc/packages_utils_dockerd feeds/packages/utils/dockerd
+    git clone https://github.com/gitbruc/packages_utils_containerd feeds/packages/utils/containerd
+    git clone https://github.com/gitbruc/packages_utils_runc feeds/packages/utils/runc
 fi
 
 # docker daemon
@@ -187,12 +187,12 @@ sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/ut
 
 # UPnP
 rm -rf feeds/{packages/net/miniupnpd,luci/applications/luci-app-upnp}
-git clone https://$gitea/sbwml/miniupnpd feeds/packages/net/miniupnpd -b v2.3.9
-git clone https://$gitea/sbwml/luci-app-upnp feeds/luci/applications/luci-app-upnp -b openwrt-24.10
+git clone https://github.com/gitbruc/miniupnpd feeds/packages/net/miniupnpd -b v2.3.9
+git clone https://github.com/gitbruc/luci-app-upnp feeds/luci/applications/luci-app-upnp -b openwrt-24.10
 
 # nginx - latest version
 rm -rf feeds/packages/net/nginx
-git clone https://$github/sbwml/feeds_packages_net_nginx feeds/packages/net/nginx -b openwrt-25.12
+git clone https://$github/gitbruc/feeds_packages_net_nginx feeds/packages/net/nginx -b openwrt-25.12
 sed -i 's/procd_set_param stdout 1/procd_set_param stdout 0/g;s/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/net/nginx/files/nginx.init
 
 # nginx - ubus
