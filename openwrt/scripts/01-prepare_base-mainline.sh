@@ -3,7 +3,7 @@
 #################################################################
 
 # autocore
-git clone https://$github/sbwml/autocore-arm -b openwrt-25.12 package/system/autocore
+git clone https://$github/gitbruc/autocore-arm -b openwrt-25.12 package/system/autocore
 
 ## x86_64 - target 6.12
 # curl -s $mirror/openwrt/patch/openwrt-6.x/x86/64/config-6.12 > target/linux/x86/64/config-6.12
