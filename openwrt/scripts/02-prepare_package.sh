@@ -2,37 +2,37 @@
 
 # golang 1.26
 rm -rf feeds/packages/lang/golang
-git clone https://$github/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+git clone https://$github/gitbruc/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
 # node - prebuilt
 rm -rf feeds/packages/lang/node
-git clone https://$github/sbwml/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
+git clone https://$github/gitbruc/feeds_packages_lang_node-prebuilt feeds/packages/lang/node -b packages-24.10
 
 # default settings
-git clone https://$github/sbwml/default-settings package/new/default-settings -b openwrt-25.12
+git clone https://$github/gitbruc/default-settings package/new/default-settings -b openwrt-25.12
 
 # wwan
-git clone https://$github/sbwml/wwan-packages package/new/wwan --depth=1
+git clone https://$github/gitbruc/wwan-packages package/new/wwan --depth=1
 
 # bandix
 git clone https://$github/timsaya/openwrt-bandix package/new/bandix --depth=1
 git clone https://$github/timsaya/luci-app-bandix package/new/luci-app-bandix --depth=1
 
 # istore
-git clone https://$github/sbwml/package_new_istore package/new/istore --depth=1
+git clone https://$github/gitbruc/package_new_istore package/new/istore --depth=1
 
 # luci-app-filemanager
 # rm -rf feeds/luci/applications/luci-app-filemanager
 # git clone https://$github/sbwml/luci-app-filemanager package/new/luci-app-filemanager
 
 # luci-app-quickfile
-git clone https://$github/sbwml/luci-app-quickfile package/new/quickfile
+git clone https://$github/gitbruc/luci-app-quickfile package/new/quickfile
 
 # luci-app-airplay2
-git clone https://$github/sbwml/luci-app-airplay2 package/new/airplay2
+git clone https://$github/gitbruc/luci-app-airplay2 package/new/airplay2
 
 # luci-app-webdav
-git clone https://$github/sbwml/luci-app-webdav package/new/luci-app-webdav
+git clone https://$github/gitbruc/luci-app-webdav package/new/luci-app-webdav
 
 # ddns - fix boot
 sed -i '/boot()/,+2d' feeds/packages/net/ddns-scripts/files/etc/init.d/ddns
@@ -47,7 +47,7 @@ curl -s $mirror/openwrt/patch/pcre/Config.in > package/libs/pcre/Config.in
 
 # lrzsz - 0.12.20
 rm -rf feeds/packages/utils/lrzsz
-git clone https://$github/sbwml/packages_utils_lrzsz package/new/lrzsz
+git clone https://$github/gitbruc/packages_utils_lrzsz package/new/lrzsz
 
 # natmap
 sed -i 's/log_stdout:bool:1/log_stdout:bool:0/g;s/log_stderr:bool:1/log_stderr:bool:0/g' feeds/packages/net/natmap/files/natmap.init
@@ -57,7 +57,7 @@ popd
 
 # samba4 - bump version
 rm -rf feeds/packages/net/samba4
-git clone https://$github/sbwml/feeds_packages_net_samba4 feeds/packages/net/samba4
+git clone https://$github/gitbruc/feeds_packages_net_samba4 feeds/packages/net/samba4
 
 # enable multi-channel
 sed -i '/workgroup/a \\n\t## enable multi-channel' feeds/packages/net/samba4/files/smb.conf.template
@@ -81,33 +81,33 @@ sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.te
 # git clone https://$github/sbwml/feeds_packages_net_aria2 -b 22.03 feeds/packages/net/aria2
 
 # airconnect
-git clone https://$github/sbwml/luci-app-airconnect package/new/airconnect --depth=1
+git clone https://$github/gitbruc/luci-app-airconnect package/new/airconnect --depth=1
 
 # netkit-ftp
-git clone https://$github/sbwml/package_new_ftp package/new/ftp
+git clone https://$github/gitbruc/package_new_ftp package/new/ftp
 
 # nethogs
-git clone https://$github/sbwml/package_new_nethogs package/new/nethogs
+git clone https://$github/gitbruc/package_new_nethogs package/new/nethogs
 
 # helloworld
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,microsocks}
-git clone https://$github/sbwml/openwrt_helloworld package/new/helloworld -b v5
+git clone https://$github/gitbruc/openwrt_helloworld package/new/helloworld -b v5
 
 # openlist
-git clone https://$github/sbwml/luci-app-openlist2 package/new/openlist --depth=1
+git clone https://$github/gitbruc/luci-app-openlist2 package/new/openlist --depth=1
 
 # netdata
 sed -i 's/syslog/none/g' feeds/packages/admin/netdata/files/netdata.conf
 
 # qBittorrent
-git clone https://$github/sbwml/luci-app-qbittorrent package/new/qbittorrent --depth=1
+git clone https://$github/gitbruc/luci-app-qbittorrent package/new/qbittorrent --depth=1
 
 # unblockneteasemusic
 git clone https://$github/UnblockNeteaseMusic/luci-app-unblockneteasemusic package/new/luci-app-unblockneteasemusic --depth=1
 sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/new/luci-app-unblockneteasemusic/root/usr/share/luci/menu.d/luci-app-unblockneteasemusic.json
 
 # Theme
-git clone https://github.com/sbwml/luci-theme-argon -b openwrt-25.12 package/new/luci-theme-argon --depth=1
+git clone https://$github/gitbruc/luci-theme-argon -b openwrt-25.12 package/new/luci-theme-argon --depth=1
 
 # OpenAppFilter
 git clone https://github.com/destan19/OpenAppFilter package/new/OpenAppFilter
@@ -120,11 +120,11 @@ sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/root/usr/
 sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/htdocs/luci-static/resources/view/nlbw/config.js
 
 # mentohust
-git clone https://github.com/sbwml/luci-app-mentohust package/new/mentohust
+# git clone https://$github/sbwml/luci-app-mentohust package/new/mentohust
 
 # custom packages
 # rm -rf feeds/packages/utils/coremark
-git clone https://github.com/gitbruc/openwrt_pkgs package/new/custom --depth=1
+git clone https://$github/gitbruc/openwrt_pkgs package/new/custom --depth=1
 rm -rf package/new/custom/ddns-scripts-aliyun
 rm -rf package/new/custom/coremark
 # coremark - prebuilt with gcc15
@@ -138,14 +138,14 @@ sed -i 's/<%:Down%>/<%:Move down%>/g' feeds/luci/modules/luci-compat/luasrc/view
 
 # luci-app-sqm
 rm -rf feeds/luci/applications/luci-app-sqm
-git clone https://$gitea/sbwml/luci-app-sqm feeds/luci/applications/luci-app-sqm
+git clone https://github.com/gitbruc/luci-app-sqm feeds/luci/applications/luci-app-sqm
 
 # unzip
 rm -rf feeds/packages/utils/unzip
-git clone https://$github/sbwml/feeds_packages_utils_unzip feeds/packages/utils/unzip
+git clone https://$github/gitbruc/feeds_packages_utils_unzip feeds/packages/utils/unzip
 
 # tcp-brutal
-git clone https://$github/sbwml/package_kernel_tcp-brutal package/kernel/tcp-brutal
+git clone https://$github/gitbruc/package_kernel_tcp-brutal package/kernel/tcp-brutal
 
 # watchcat - clean config
 true > feeds/packages/utils/watchcat/files/watchcat.config
