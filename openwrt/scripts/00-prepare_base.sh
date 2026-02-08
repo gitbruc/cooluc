@@ -162,14 +162,12 @@ git clone https://$github/gitbruc/feeds_packages_net_curl feeds/packages/net/cur
 
 # Docker
 rm -rf feeds/luci/applications/luci-app-dockerman
-git clone https://github.com/gitbruc/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
-if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
-    rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-    git clone https://github.com/gitbruc/packages_utils_docker feeds/packages/utils/docker
-    git clone https://github.com/gitbruc/packages_utils_dockerd feeds/packages/utils/dockerd
-    git clone https://github.com/gitbruc/packages_utils_containerd feeds/packages/utils/containerd
-    git clone https://github.com/gitbruc/packages_utils_runc feeds/packages/utils/runc
-fi
+git clone https://$github/gitbruc/luci-app-dockerman feeds/luci/applications/luci-app-dockerman
+rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
+git clone https://$github/gitbruc/packages_utils_docker feeds/packages/utils/docker
+git clone https://$github/gitbruc/packages_utils_dockerd feeds/packages/utils/dockerd
+git clone https://$github/gitbruc/packages_utils_containerd feeds/packages/utils/containerd
+git clone https://$github/gitbruc/packages_utils_runc feeds/packages/utils/runc
 
 # docker daemon
 sed -i "s|^#\(.*option alt_config_file '/etc/docker/daemon.json'.*\)| \1|" feeds/packages/utils/dockerd/files/etc/config/dockerd
