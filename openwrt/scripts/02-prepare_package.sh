@@ -16,7 +16,7 @@ git clone https://$github/gitbruc/wwan-packages package/new/wwan --depth=1
 
 # bandix
 git clone https://$github/timsaya/openwrt-bandix package/new/bandix --depth=1
-git clone https://$github/timsaya/luci-app-bandix package/new/luci-app-bandix --depth=1
+git clone https://github.com/gitbruc/luci-app-bandix package/new/luci-app-bandix --depth=1
 
 # istore
 git clone https://$github/gitbruc/package_new_istore package/new/istore --depth=1
@@ -114,10 +114,6 @@ git clone https://github.com/destan19/OpenAppFilter package/new/OpenAppFilter
 
 # iperf3
 sed -i "s/D_GNU_SOURCE/D_GNU_SOURCE -funroll-loops/g" feeds/packages/net/iperf3/Makefile
-
-# nlbwmon
-sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/root/usr/share/luci/menu.d/luci-app-nlbwmon.json
-sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/htdocs/luci-static/resources/view/nlbw/config.js
 
 # mentohust
 # git clone https://$github/sbwml/luci-app-mentohust package/new/mentohust

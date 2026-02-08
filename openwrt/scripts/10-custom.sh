@@ -36,16 +36,21 @@ rm -rf package/new/helloworld/{luci-app-passwall,patch-luci-app-passwall.patch}
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/new/helloworld/luci-app-passwall
 # luci-app-taskplan
 git clone https://github.com/sirpdboy/luci-app-taskplan.git package/new/luci-app-taskplan
+# control-sqm
+sed -i 's|admin/network|admin/control|' "feeds/luci/applications/luci-app-sqm/root/usr/share/luci/menu.d/luci-app-sqm.json"
+# control-nlbw
+sed -i 's|admin/services|admin/control|g' feeds/luci/applications/luci-app-nlbwmon/root/usr/share/luci/menu.d/luci-app-nlbwmon.json
+sed -i 's|admin/services|admin/control|g' feeds/luci/applications/luci-app-nlbwmon/htdocs/luci-static/resources/view/nlbw/config.js
 # control-banip
 sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-banip/root/usr/share/luci/menu.d/luci-app-banip.json"
 # control-watchcat
 sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-watchcat/root/usr/share/luci/menu.d/luci-app-watchcat.json"
 # control-wol
 sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-wol/root/usr/share/luci/menu.d/luci-app-wol.json"
-# control-openappfilter
+# control-openappfilter---
 # sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua"
-# control-nftqos
-# sed -i 's|"admin", "services"|"admin", "control"|g' "feeds/luci/applications/luci-app-nft-qos/luasrc/controller/nft-qos.lua"
+# sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/model/cbi/appfilter/dev_status.lua"
+# sed -i 's|admin/services|admin/control|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/app_filter.htm"
 # nas-samba4
 sed -i 's|admin/services|admin/nas|' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
 # change luci
