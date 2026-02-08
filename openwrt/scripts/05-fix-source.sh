@@ -25,7 +25,7 @@ sed -i "/CONFIGURE_ARGS/i\TARGET_CFLAGS += -ffat-lto-objects\n" feeds/packages/l
 
 # xdp-tools
 rm -rf package/network/utils/xdp-tools
-git clone https://$github/sbwml/package_network_utils_xdp-tools package/network/utils/xdp-tools
+git clone https://$github/gitbruc/package_network_utils_xdp-tools package/network/utils/xdp-tools
 
 # ksmbd luci
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/luci/applications/luci-app-ksmbd/htdocs/luci-static/resources/view/ksmbd.js
