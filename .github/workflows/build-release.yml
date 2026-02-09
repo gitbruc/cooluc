@@ -74,15 +74,15 @@ jobs:
         echo
 
     - name: Free disk space
-      uses: sbwml/actions@free-disk
+      uses: gitbruc/actions@free-disk
       with:
         build-mount-path: /builder
 
     - name: Build System Setup
-      uses: sbwml/actions@openwrt-build-setup
+      uses: gitbruc/actions@openwrt-build-setup
 
     - name: Install LLVM
-      uses: sbwml/actions@install-llvm
+      uses: gitbruc/actions@install-llvm
 
     - name: Restore Cached
       if: ${{ github.event.inputs.ccache == 'true' }}
