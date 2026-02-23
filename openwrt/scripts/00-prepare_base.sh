@@ -160,7 +160,7 @@ git clone https://$github/gitbruc/feeds_packages_net_curl feeds/packages/net/cur
 
 # Docker
 rm -rf feeds/luci/applications/luci-app-dockerman
-git clone https://$github/gitbruc/luci-app-dockerman feeds/luci/applications/luci-app-dockerman
+git clone https://$github/gitbruc/luci-app-dockerman -b openwrt-25.12 feeds/luci/applications/luci-app-dockerman
 rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
 git clone https://$github/gitbruc/packages_utils_docker feeds/packages/utils/docker
 git clone https://$github/gitbruc/packages_utils_dockerd feeds/packages/utils/dockerd
