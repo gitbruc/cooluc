@@ -202,6 +202,10 @@ curl -s $mirror/openwrt/nginx/luci.locations > feeds/packages/net/nginx/files-lu
 curl -s $mirror/openwrt/nginx/uci.conf.template > feeds/packages/net/nginx-util/files/uci.conf.template
 curl -s $mirror/openwrt/nginx/nginx.config > feeds/packages/net/nginx-util/files/nginx.config
 
+# apk
+mkdir -p package/system/apk/patches
+curl -s $mirror/openwrt/patch/apk/9000-io_url_wget-disbale-hsts.patch > package/system/opkg/patches/9000-io_url_wget-disbale-hsts.patch
+
 # opkg
 # mkdir -p package/system/opkg/patches
 # curl -s $mirror/openwrt/patch/opkg/900-opkg-download-disable-hsts.patch > package/system/opkg/patches/900-opkg-download-disable-hsts.patch
