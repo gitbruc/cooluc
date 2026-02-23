@@ -204,7 +204,7 @@ curl -s $mirror/openwrt/nginx/nginx.config > feeds/packages/net/nginx-util/files
 
 # apk
 mkdir -p package/system/apk/patches
-curl -s $mirror/openwrt/patch/apk/9000-io_url_wget-disbale-hsts.patch > package/system/opkg/patches/9000-io_url_wget-disbale-hsts.patch
+curl -s $mirror/openwrt/patch/apk/9000-io_url_wget-disbale-hsts.patch > package/system/apk/patches/9000-io_url_wget-disbale-hsts.patch
 
 # opkg
 # mkdir -p package/system/opkg/patches
