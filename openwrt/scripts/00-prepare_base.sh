@@ -72,7 +72,7 @@ sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/
 curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
 
 # libubox
-# sed -i '/TARGET_CFLAGS/ s/$/ -Os/' package/libs/libubox/Makefile
+sed -i '/TARGET_CFLAGS/ s/$/ -O2/' package/libs/libubox/Makefile
 
 # DPDK & NUMACTL
 mkdir -p package/new/{dpdk/patches,numactl}
@@ -97,8 +97,6 @@ if [ "$version" = "dev" ] || [ "$version" = "rc2" ]; then
     # firewall4
     sed -i 's|$(PROJECT_GIT)/project|https://github.com/openwrt|g' package/network/config/firewall4/Makefile
     mkdir -p package/network/config/firewall4/patches
-    # fix ct status dnat
-    curl -s $mirror/openwrt/patch/firewall4/firewall4_patches/990-unconditionally-allow-ct-status-dnat.patch > package/network/config/firewall4/patches/990-unconditionally-allow-ct-status-dnat.patch
     # fullcone
     curl -s $mirror/openwrt/patch/firewall4/firewall4_patches/999-01-firewall4-add-fullcone-support.patch > package/network/config/firewall4/patches/999-01-firewall4-add-fullcone-support.patch
     # bcm fullcone
