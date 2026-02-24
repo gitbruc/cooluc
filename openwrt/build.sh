@@ -172,7 +172,6 @@ fi
 
 # tags
 if [ "$1" = "rc2" ]; then
-    git fetch --tags 2>/dev/null || true
     git describe --abbrev=0 --tags > version.txt
 else
     git branch | awk '{print $2}' > version.txt
