@@ -71,8 +71,8 @@ git clone https://$github/gitbruc/package_kernel_r8127 package/kernel/r8127
 # fix r8152
 sed -i 's/DEPENDS:=+kmod-usb-net/DEPENDS:=+kmod-usb-net +kmod-libphy/g' package/kernel/r8152/Makefile
 # Realtek Wireless driver - RTL8822CS & RTL8852AU
-git clone https://$github/gitbruc/package_kernel_rtl8822cs package/kernel/rtl8822cs
-git clone https://$github/gitbruc/package_kernel_rtl8852au package/kernel/rtl8852au
+# git clone https://$github/gitbruc/package_kernel_rtl8822cs package/kernel/rtl8822cs
+# git clone https://$github/gitbruc/package_kernel_rtl8852au package/kernel/rtl8852au
 
 # GCC Optimization level -O3
 curl -s $mirror/openwrt/patch/target-modify_for_aarch64_x86_64.patch | patch -p1
