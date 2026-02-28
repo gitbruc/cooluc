@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# lto jobserver
+sed -i 's/-flto=auto/-flto=jobserver/g' include/package.mk
+
 # patch source
 curl -s $mirror/openwrt/patch/generic-25.12/0001-tools-add-upx-tools.patch | patch -p1
 curl -s $mirror/openwrt/patch/generic-25.12/0002-rootfs-add-upx-compression-support.patch | patch -p1
