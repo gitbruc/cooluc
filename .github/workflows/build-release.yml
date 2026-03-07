@@ -103,14 +103,9 @@ jobs:
         bash <(curl -sS https://raw.githubusercontent.com/gitbruc/cooluc/refs/heads/new/openwrt/build.sh) ${{ env.build_version }} ${{ github.event.inputs.device }}
         cd openwrt
         if [ "${{ github.event.inputs.version }}" = release ]; then
-          # 2. 优先从 build.sh 生成的 version.txt 读取，如果失败再尝试 git describe并加上 || echo 兜底
-          if [ -f version.txt ]; then
-            tags=OpenWrt-$(cat version.txt)
-          else
-            tags=OpenWrt-$(git describe --abbrev=0 --tags || echo "unknown")
-          fi
+          tags=OpenWrt-$(git describe --abbrev=0 --tags)
         else
-          tags=snapshot-25.12-$(git log -n 1 --date=format:"%Y%m%d" --format="%cd" || echo "unknown")-$(git log --pretty=format:"%h" -1 || echo "unknown")
+          tags=snapshot-25.12-$(git log -n 1 --date=format:"%Y%m%d" --format="%cd")-$(git log --pretty=format:"%h" -1)
         fi
         echo "latest_release=${tags}-${{ github.event.inputs.device }}" >>$GITHUB_ENV
 
