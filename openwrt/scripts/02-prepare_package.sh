@@ -73,13 +73,6 @@ sed -i 's/0666/0644/g;s/0744/0755/g;s/0777/0755/g' feeds/luci/applications/luci-
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/samba.config
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.template
 
-# aria2 & ariaNG
-# rm -rf feeds/packages/net/ariang
-# rm -rf feeds/luci/applications/luci-app-aria2
-# git clone https://$github/sbwml/ariang-nginx package/new/ariang-nginx
-# rm -rf feeds/packages/net/aria2
-# git clone https://$github/sbwml/feeds_packages_net_aria2 -b 22.03 feeds/packages/net/aria2
-
 # airconnect
 git clone https://$github/gitbruc/luci-app-airconnect package/new/airconnect --depth=1
 
