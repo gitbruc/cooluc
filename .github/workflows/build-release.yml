@@ -26,7 +26,7 @@ on:
       SquashFS_zstd:
         description: 'Enable ZSTD compression (SquashFS)'
         type: boolean
-        default: false
+        default: true
       lan_addr:
         description: 'Setting default LAN address'
         required: true
