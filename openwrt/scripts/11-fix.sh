@@ -6,3 +6,6 @@ sed -i 's/34c85d914e01006439f5e1c9287ae96d6bfcc729ed4bcf386bf5948b938254f4/5ef82
 
 # rtprtp2httpd hash
 sed -i 's/b040c99b5fd8a2adce71a4d4b0f92c92a7a2b4c2f1fd9abad24ae7e657ec56e5/f2d42db1944b8199e3956baca1c45477a9acc9e1496f06d5347d73b72337fd2d/g' package/new/custom/rtp2httpd/Makefile
+
+# ddns-go
+sed -i 's/^[[:space:]]\+/\t/g' package/new/ddnsgo/ddns-go/Makefile
