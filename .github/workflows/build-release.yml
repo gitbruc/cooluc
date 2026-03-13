@@ -22,7 +22,7 @@ on:
       ccache:
         description: 'Enable ccache (Use Cache to speed up next build)'
         type: boolean
-        default: true
+        default: false
       SquashFS_zstd:
         description: 'Enable ZSTD compression (SquashFS)'
         type: boolean
