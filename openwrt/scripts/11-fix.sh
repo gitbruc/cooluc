@@ -12,3 +12,6 @@ sed -i 's/^[[:space:]]\+/\t/g' package/new/ddnsgo/ddns-go/Makefile
 
 # intel-microcode
 sed -i 's/mkdir $(PKG_BUILD_DIR)\/intel-ucode-ipkg/rm -rf $(PKG_BUILD_DIR)\/intel-ucode-ipkg \&\& mkdir -p $(PKG_BUILD_DIR)\/intel-ucode-ipkg/' package/firmware/intel-microcode/Makefile
+
+# 修复 Rust Makefile 中的 CI 校验配置
+sed -i 's/--set=llvm.download-ci-llvm=false/--set=llvm.download-ci-llvm=if-unchanged/g' feeds/packages/lang/rust/Makefile
