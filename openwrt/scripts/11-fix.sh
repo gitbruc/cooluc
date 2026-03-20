@@ -11,4 +11,4 @@ sed -i 's/b040c99b5fd8a2adce71a4d4b0f92c92a7a2b4c2f1fd9abad24ae7e657ec56e5/f2d42
 sed -i 's/^[[:space:]]\+/\t/g' package/new/ddnsgo/ddns-go/Makefile
 
 # intel-microcode
-sed -i 's/mkdir $(PKG_BUILD_DIR)\/intel-ucode-ipkg/mkdir -p $(PKG_BUILD_DIR)\/intel-ucode-ipkg/' package/firmware/intel-microcode/Makefile
+sed -i 's/mkdir $(PKG_BUILD_DIR)\/intel-ucode-ipkg/rm -rf $(PKG_BUILD_DIR)\/intel-ucode-ipkg \&\& mkdir -p $(PKG_BUILD_DIR)\/intel-ucode-ipkg/' package/firmware/intel-microcode/Makefile
