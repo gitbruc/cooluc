@@ -13,5 +13,6 @@ sed -i 's/^[[:space:]]\+/\t/g' package/new/ddnsgo/ddns-go/Makefile
 # intel-microcode
 sed -i 's/mkdir $(PKG_BUILD_DIR)\/intel-ucode-ipkg/rm -rf $(PKG_BUILD_DIR)\/intel-ucode-ipkg \&\& mkdir -p $(PKG_BUILD_DIR)\/intel-ucode-ipkg/' package/firmware/intel-microcode/Makefile
 
-# 修复 Rust 报错：在源码执行层强行注入 CI=false 欺骗编译器
-sed -i 's/CARGO_HOME=$(CARGO_HOME)/CI=false CARGO_HOME=$(CARGO_HOME)/g' feeds/packages/lang/rust/Makefile
+# rust
+sed -i 's/--set=llvm.download-ci-llvm=false/--set=llvm.download-ci-llvm=if-unchanged/g' feeds/packages/lang/rust/Makefile
+sed -i 's/$(PYTHON) $(HOST_BUILD_DIR)\/x.py/env -u CI -u GITHUB_ACTIONS $(PYTHON) $(HOST_BUILD_DIR)\/x.py/g' feeds/packages/lang/rust/Makefile
