@@ -48,9 +48,9 @@ sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-watch
 # control-wol
 sed -i 's|admin/services|admin/control|' "feeds/luci/applications/luci-app-wol/root/usr/share/luci/menu.d/luci-app-wol.json"
 # control-openappfilter---
-# sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua"
-# sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/model/cbi/appfilter/dev_status.lua"
-# sed -i 's|admin/services|admin/control|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/app_filter.htm"
+sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua"
+sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/model/cbi/appfilter/dev_status.lua"
+sed -i 's|admin/services|admin/control|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/app_filter.htm"
 # nas-samba4
 sed -i 's|admin/services|admin/nas|' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
 # change luci
