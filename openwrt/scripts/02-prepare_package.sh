@@ -116,6 +116,8 @@ sed -i "s/D_GNU_SOURCE/D_GNU_SOURCE -funroll-loops/g" feeds/packages/net/iperf3/
 git clone https://$github/gitbruc/openwrt_pkgs package/new/custom --depth=1
 rm -rf package/new/custom/ddns-scripts-aliyun
 rm -rf package/new/custom/coremark
+# -openwrt luci-app-adguardhome
+rm -rf feeds/luci/applications/luci-app-adguardhome
 # coremark - prebuilt with gcc15
 #if [ "$platform" = "armv8" ]; then
 #    curl -s $mirror/openwrt/patch/coremark/coremark.aarch64-16-threads > package/new/custom/coremark/src/musl/coremark.aarch64
