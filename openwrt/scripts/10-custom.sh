@@ -1,9 +1,9 @@
 #!/bin/bash
 # smartdns
-rm -rf feeds/packages/net/smartdns
-rm -rf feeds/luci/applications/luci-app-smartdns
-git clone https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
-git clone https://github.com/pymumu/luci-app-smartdns.git package/new/luci-app-smartdns
+#rm -rf feeds/packages/net/smartdns
+#rm -rf feeds/luci/applications/luci-app-smartdns
+#git clone https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
+#git clone https://github.com/pymumu/luci-app-smartdns.git package/new/luci-app-smartdns
 
 # fanchmwrt
 # 1. 克隆 fanchmwrt 仓库到临时目录 (使用 --depth 1 减少下载量)

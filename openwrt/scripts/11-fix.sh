@@ -10,5 +10,3 @@ sed -i 's/mkdir $(PKG_BUILD_DIR)\/intel-ucode-ipkg/rm -rf $(PKG_BUILD_DIR)\/inte
 # rust
 sed -i 's/$(PYTHON) $(HOST_BUILD_DIR)\/x.py/env -u CI -u GITHUB_ACTIONS $(PYTHON) $(HOST_BUILD_DIR)\/x.py --set llvm.download-ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 
-# rtprtp2httpd hash
-sed -i 's/b040c99b5fd8a2adce71a4d4b0f92c92a7a2b4c2f1fd9abad24ae7e657ec56e5/f2d42db1944b8199e3956baca1c45477a9acc9e1496f06d5347d73b72337fd2d/g' package/new/custom/rtp2httpd/Makefile
