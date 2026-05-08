@@ -12,3 +12,12 @@ sed -i 's/$(PYTHON) $(HOST_BUILD_DIR)\/x.py/env -u CI -u GITHUB_ACTIONS $(PYTHON
 
 # dockerd
 sed -i 's/6850b0e5d07bed32b3613d4c7da50e0fc36542239a5ff5188b524494e9edda75/f2d4d892f5439ac8b3b28a2ba03d29db1a377f8dd5d057ca941cdbba92f6ed7f/' feeds/packages/utils/dockerd/Makefile
+
+# tuic-client
+cat << 'EOF' >> package/new/helloworld/tuic-client/Makefile
+
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	sed -i 's/Header::Packet(pkt) if let Some(inner_pkt) = self.model.recv_packet(pkt.clone()) =>/Header::Packet(pkt) => if let Some(inner_pkt) = self.model.recv_packet(pkt.clone())/' $(PKG_BUILD_DIR)/tuic-core/src/quinn.rs
+endef
+EOF
