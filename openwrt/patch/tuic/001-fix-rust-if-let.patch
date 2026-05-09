@@ -1,0 +1,12 @@
+--- a/tuic-core/src/quinn.rs
++++ b/tuic-core/src/quinn.rs
+@@ -255,7 +255,7 @@
+             }
+             match header {
+                 Header::Initial(pkt) => self.handle_initial(pkt, endpoint, remote_addr, ecn),
+                 Header::ZeroRtt(_) => {}
+-                Header::Packet(pkt) if let Some(inner_pkt) = self.model.recv_packet(pkt.clone()) => {
++                Header::Packet(pkt) => if let Some(inner_pkt) = self.model.recv_packet(pkt.clone()) {
+                     self.handle_inner_packet(inner_pkt, endpoint, remote_addr, ecn)
+                 }
+                 Header::Packet(_) | Header::VersionNegotiate { .. } | Header::Retry { .. } => {}
