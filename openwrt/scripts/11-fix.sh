@@ -16,3 +16,6 @@ sed -i 's/6850b0e5d07bed32b3613d4c7da50e0fc36542239a5ff5188b524494e9edda75/f2d4d
 # tuic-client
 #mkdir -p package/new/helloworld/tuic-client/patches
 #curl -sL $mirror/openwrt/patch/tuic/001-fix-rust-if-let.patch > package/new/helloworld/tuic-client/patches/001-fix-rust-if-let.patch
+
+# natflow
+curl -sL $mirror/openwrt/patch/natflow/999-fix-ipset-api-kernel-6.12.patch > package/new/natflow/patches/999-fix-ipset-api-kernel-6.12.patch
