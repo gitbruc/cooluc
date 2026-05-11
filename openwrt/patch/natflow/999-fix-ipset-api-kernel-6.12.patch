@@ -1,33 +1,15 @@
-
 --- a/natflow_common.c
-
 +++ b/natflow_common.c
-
 @@ -29,7 +29,12 @@
-
  static inline ip_set_id_t compat_ip_set_get_byname(struct net *net, const char *name)
-
  {
-
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0) || defined(ip_set_get_byname)
-
-+struct ip_set *set;
-
-+return ip_set_get_byname(net, name, &set);
-
++	struct ip_set *set;
++	return ip_set_get_byname(net, name, &set);
 +#else
-
- ip_set_id_t id = ip_set_id_find_byname(net, name);
-
- if (id != IPSET_INVALID_ID)
-
- ip_set_get_byindex(net, id);
-
- return id;
-
+ 	ip_set_id_t id = ip_set_id_find_byname(net, name);
+ 	if (id != IPSET_INVALID_ID)
+ 		ip_set_get_byindex(net, id);
+ 	return id;
 +#endif
-
  }
-
- 
-
