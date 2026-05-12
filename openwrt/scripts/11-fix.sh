@@ -13,9 +13,5 @@ sed -i 's/$(PYTHON) $(HOST_BUILD_DIR)\/x.py/env -u CI -u GITHUB_ACTIONS $(PYTHON
 # dockerd
 sed -i 's/6850b0e5d07bed32b3613d4c7da50e0fc36542239a5ff5188b524494e9edda75/f2d4d892f5439ac8b3b28a2ba03d29db1a377f8dd5d057ca941cdbba92f6ed7f/' feeds/packages/utils/dockerd/Makefile
 
-# tuic-client
-#mkdir -p package/new/helloworld/tuic-client/patches
-#curl -sL $mirror/openwrt/patch/tuic/001-fix-rust-if-let.patch > package/new/helloworld/tuic-client/patches/001-fix-rust-if-let.patch
-
 # natflow
 curl -sL $mirror/openwrt/patch/natflow/999-fix-ipset-api-kernel-6.12.patch > package/new/natflow/patches/999-fix-ipset-api-kernel-6.12.patch
