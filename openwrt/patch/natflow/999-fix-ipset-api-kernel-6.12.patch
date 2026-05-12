@@ -1,6 +1,6 @@
 --- a/natflow_common.c
 +++ b/natflow_common.c
-@@ -29,6 +29,16 @@
+@@ -29,7 +29,19 @@
  static inline ip_set_id_t compat_ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
  {
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0)
