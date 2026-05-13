@@ -381,9 +381,8 @@ else
     echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
-    #make package/firmware/intel-microcode/clean V=s
-    #make package/firmware/intel-microcode/compile V=s -j1
-    make -j$cores IGNORE_ERRORS="n m"
+    make -j1 V=s IGNORE_ERRORS="n m"
+    #make -j$cores IGNORE_ERRORS="n m"
 fi
 
 # Compile time

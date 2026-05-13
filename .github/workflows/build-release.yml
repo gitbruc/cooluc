@@ -109,12 +109,12 @@ jobs:
         fi
         echo "latest_release=${tags}-${{ github.event.inputs.device }}" >>$GITHUB_ENV
 
-    - name: Extensive logs after a failed compilation
-      if: steps.compile.outcome == 'failure'
-      working-directory: /builder
-      run: |
-        cd openwrt
-        make -j1 V=s IGNORE_ERRORS="n m"
+    #- name: Extensive logs after a failed compilation
+    #  if: steps.compile.outcome == 'failure'
+    #  working-directory: /builder
+    #  run: |
+    #    cd openwrt
+    #    make -j1 V=s IGNORE_ERRORS="n m"
 
     - name: Delete Cached
       if: ${{ github.event.inputs.ccache == 'true' }}
