@@ -29,11 +29,7 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
 # script url
-if [ "$isCN" = "CN" ]; then
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-else
-    export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
-fi
+export mirror=https://raw.githubusercontent.com/gitbruc/myopenwrt/new
 
 # private gitea
 export gitea=git.cooluc.com
@@ -47,8 +43,7 @@ fi
 
 # Check root
 if [ "$(id -u)" = "0" ]; then
-    echo -e "${RED_COLOR}Building with root user is not supported.${RES}"
-    exit 1
+    export FORCE_UNSAFE_CONFIGURE=1 FORCE=1
 fi
 
 # Start time
@@ -75,10 +70,10 @@ fi
 
 # Source branch
 if [ "$1" = "dev" ]; then
-    export branch=openwrt-24.10
+    export branch=openwrt-25.12
     export version=dev
 elif [ "$1" = "rc2" ]; then
-    latest_release="v$(curl -s $mirror/tags/v24)"
+    latest_release="v$(curl -s $mirror/tags/v25)"
     export branch=$latest_release
     export version=rc2
 fi
@@ -97,8 +92,10 @@ elif [ "$USE_GCC14" = y ]; then
     export USE_GCC14=y gcc_version=14
 elif [ "$USE_GCC15" = y ]; then
     export USE_GCC15=y gcc_version=15
+elif [ "$USE_GCC16" = y ]; then
+    export USE_GCC16=y gcc_version=16
 else
-    export USE_GCC13=y gcc_version=13
+    export USE_GCC15=y gcc_version=15
 fi
 [ "$ENABLE_MOLD" = y ] && export ENABLE_MOLD=y
 
@@ -107,6 +104,8 @@ export \
     ENABLE_BPF=$ENABLE_BPF \
     ENABLE_DPDK=$ENABLE_DPDK \
     ENABLE_LRNG=$ENABLE_LRNG \
+    KERNEL_CLANG_LTO=$KERNEL_CLANG_LTO \
+    ROOT_PASSWORD=$ROOT_PASSWORD
 
 # print version
 echo -e "\r\n${GREEN_COLOR}Building $branch${RES}\r\n"
@@ -121,19 +120,38 @@ else
    exit 1
 fi
 
+# print build opt
 echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
+echo -e "${GREEN_COLOR}SCRIPT_URL:${RES} ${BLUE_COLOR}$mirror${RES}\r\n"
 echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
-[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN: $LAN${RES}" || echo -e "${GREEN_COLOR}LAN: 10.0.0.1${RES}"
+print_status() {
+    local name="$1"
+    local value="$2"
+    local true_color="${3:-$GREEN_COLOR}"
+    local false_color="${4:-$YELLOW_COLOR}"
+    local newline="${5:-}"
+    if [ "$value" = "y" ]; then
+        echo -e "${GREEN_COLOR}${name}:${RES} ${true_color}true${RES}${newline}"
+    else
+        echo -e "${GREEN_COLOR}${name}:${RES} ${false_color}false${RES}${newline}"
+    fi
+}
+[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 10.0.0.1"
+[ -n "$ROOT_PASSWORD" ] \
+    && echo -e "${GREEN_COLOR}Default Password:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" \
+    || echo -e "${GREEN_COLOR}Default Password:${RES} (${YELLOW_COLOR}No password${RES})"
 [ "$ENABLE_GLIBC" = "y" ] && echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}glibc${RES}" || echo -e "${GREEN_COLOR}Standard C Library:${RES} ${BLUE_COLOR}musl${RES}"
-[ "$ENABLE_DPDK" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_DPDK: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_DPDK:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_MOLD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_MOLD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_MOLD:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_BPF" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_BPF: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_BPF:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LTO" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LTO: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LTO:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LRNG" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LRNG: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LRNG:${RES} ${RED_COLOR}false${RES}"
-[ "$ENABLE_LOCAL_KMOD" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_LOCAL_KMOD: false${RES}"
-[ "$BUILD_FAST" = "y" ] && echo -e "${GREEN_COLOR}BUILD_FAST: true${RES}" || echo -e "${GREEN_COLOR}BUILD_FAST:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$ENABLE_CCACHE" = "y" ] && echo -e "${GREEN_COLOR}ENABLE_CCACHE: true${RES}" || echo -e "${GREEN_COLOR}ENABLE_CCACHE:${RES} ${YELLOW_COLOR}false${RES}"
-[ "$MINIMAL_BUILD" = "y" ] && echo -e "${GREEN_COLOR}MINIMAL_BUILD: true${RES}" || echo -e "${GREEN_COLOR}MINIMAL_BUILD: false${RES}"
+print_status "ENABLE_DPDK"       "$ENABLE_DPDK"
+print_status "ENABLE_MOLD"       "$ENABLE_MOLD"
+print_status "ENABLE_BPF"        "$ENABLE_BPF" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LTO"        "$ENABLE_LTO" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LRNG"       "$ENABLE_LRNG" "$GREEN_COLOR" "$RED_COLOR"
+print_status "ENABLE_LOCAL_KMOD" "$ENABLE_LOCAL_KMOD"
+print_status "BUILD_FAST"        "$BUILD_FAST"
+print_status "ENABLE_CCACHE"     "$ENABLE_CCACHE"
+print_status "MINIMAL_BUILD"     "$MINIMAL_BUILD"
+print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
+print_status "KERNEL_CLANG_LTO"  "$KERNEL_CLANG_LTO" "$GREEN_COLOR" "$YELLOW_COLOR" "\n"
 
 
 # Compile
@@ -149,7 +167,8 @@ else
     echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
     sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
     sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
-    make -j$cores V=s IGNORE_ERRORS="n m"
+    make -j1 V=s IGNORE_ERRORS="n m"
+    #make -j$cores IGNORE_ERRORS="n m"
 fi
 
 # Compile time
@@ -170,24 +189,23 @@ fi
 
 if [ "$platform" = "x86_64" ]; then
     if [ "$NO_KMOD" != "y" ]; then
-        cp -a bin/targets/x86/*/packages $kmodpkg_name
-        rm -f $kmodpkg_name/Packages*
-        cp -a bin/packages/x86_64/base/rtl88*a-firmware*.ipk $kmodpkg_name/
-        cp -a bin/packages/x86_64/base/natflow*.ipk $kmodpkg_name/
+        cp -a bin/targets/x86/*/packages kmodpkg
+        rm -f kmodpkg/Packages*
+        cp -a bin/packages/x86_64/base/rtl88*a-firmware*.apk kmodpkg/ || true
+        cp -a bin/packages/x86_64/base/natflow*.apk kmodpkg/ || true
         [ "$OPENWRT_CORE" = "y" ] && {
-            cp -a bin/packages/x86_64/base/*3ginfo*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*modemband*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*sms-tool*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*quectel*.ipk $kmodpkg_name/
-            cp -a bin/packages/x86_64/base/*fibocom*.ipk $kmodpkg_name/
+            cp -a bin/packages/x86_64/base/*3ginfo*.apk kmodpkg/ || true
+            cp -a bin/packages/x86_64/base/*modemband*.apk kmodpkg/ || true
+            cp -a bin/packages/x86_64/base/*sms-tool*.apk kmodpkg/ || true
+            cp -a bin/packages/x86_64/base/*quectel*.apk kmodpkg/ || true
         }
         [ "$ENABLE_DPDK" = "y" ] && {
-            cp -a bin/packages/x86_64/base/*dpdk*.ipk $kmodpkg_name/ || true
-            cp -a bin/packages/x86_64/base/*numa*.ipk $kmodpkg_name/ || true
+            cp -a bin/packages/x86_64/base/*dpdk*.apk kmodpkg/ || true
+            cp -a bin/packages/x86_64/base/*numa*.apk kmodpkg/ || true
         }
-        bash kmod-sign $kmodpkg_name
-        tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
-        rm -rf $kmodpkg_name
+        bash kmod-sign kmodpkg
+        tar zcf x86_64-kmodpkg.tar.gz kmodpkg
+        rm -rf kmodpkg
     fi
     # Backup download cache
     if [ "$isCN" = "CN" ] && [ "$1" = "rc2" ]; then
@@ -197,24 +215,23 @@ if [ "$platform" = "x86_64" ]; then
     exit 0
 elif [ "$platform" = "armv8" ]; then
     if [ "$NO_KMOD" != "y" ]; then
-        cp -a bin/targets/armsr/armv8*/packages $kmodpkg_name
-        rm -f $kmodpkg_name/Packages*
-        cp -a bin/packages/aarch64_generic/base/rtl88*a-firmware*.ipk $kmodpkg_name/
-        cp -a bin/packages/aarch64_generic/base/natflow*.ipk $kmodpkg_name/
+        cp -a bin/targets/armsr/armv8*/packages kmodpkg
+        rm -f kmodpkg/Packages*
+        cp -a bin/packages/aarch64_generic/base/rtl88*a-firmware*.apk kmodpkg/ || true
+        cp -a bin/packages/aarch64_generic/base/natflow*.apk kmodpkg/ || true
         [ "$OPENWRT_CORE" = "y" ] && {
-            cp -a bin/packages/aarch64_generic/base/*3ginfo*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*modemband*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*sms-tool*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*quectel*.ipk $kmodpkg_name/
-            cp -a bin/packages/aarch64_generic/base/*fibocom*.ipk $kmodpkg_name/
+            cp -a bin/packages/aarch64_generic/base/*3ginfo*.apk kmodpkg/ || true
+            cp -a bin/packages/aarch64_generic/base/*modemband*.apk kmodpkg/ || true
+            cp -a bin/packages/aarch64_generic/base/*sms-tool*.apk kmodpkg/ || true
+            cp -a bin/packages/aarch64_generic/base/*quectel*.apk kmodpkg/ || true
         }
         [ "$ENABLE_DPDK" = "y" ] && {
-            cp -a bin/packages/aarch64_generic/base/*dpdk*.ipk $kmodpkg_name/ || true
-            cp -a bin/packages/aarch64_generic/base/*numa*.ipk $kmodpkg_name/ || true
+            cp -a bin/packages/aarch64_generic/base/*dpdk*.apk kmodpkg/ || true
+            cp -a bin/packages/aarch64_generic/base/*numa*.apk kmodpkg/ || true
         }
-        bash kmod-sign $kmodpkg_name
-        tar zcf armv8-$kmodpkg_name.tar.gz $kmodpkg_name
-        rm -rf $kmodpkg_name
+        bash kmod-sign kmodpkg
+        tar zcf armv8-kmodpkg.tar.gz kmodpkg
+        rm -rf kmodpkg
     fi
     exit 0
 fi

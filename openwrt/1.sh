@@ -29,7 +29,7 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
 # script url
-export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
+export mirror=https://raw.githubusercontent.com/gitbruc/myopenwrt/new
 
 # private gitea
 export gitea=git.cooluc.com
@@ -92,6 +92,8 @@ elif [ "$USE_GCC14" = y ]; then
     export USE_GCC14=y gcc_version=14
 elif [ "$USE_GCC15" = y ]; then
     export USE_GCC15=y gcc_version=15
+elif [ "$USE_GCC16" = y ]; then
+    export USE_GCC16=y gcc_version=16
 else
     export USE_GCC15=y gcc_version=15
 fi
@@ -102,6 +104,7 @@ export \
     ENABLE_BPF=$ENABLE_BPF \
     ENABLE_DPDK=$ENABLE_DPDK \
     ENABLE_LRNG=$ENABLE_LRNG \
+    KERNEL_CLANG_LTO=$KERNEL_CLANG_LTO \
     ROOT_PASSWORD=$ROOT_PASSWORD
 
 # print version
@@ -148,16 +151,14 @@ print_status "BUILD_FAST"        "$BUILD_FAST"
 print_status "ENABLE_CCACHE"     "$ENABLE_CCACHE"
 print_status "MINIMAL_BUILD"     "$MINIMAL_BUILD"
 print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
+print_status "KERNEL_CLANG_LTO"  "$KERNEL_CLANG_LTO" "$GREEN_COLOR" "$YELLOW_COLOR" "\n"
 
 # clean old files
-rm -rf openwrt master
+rm -rf openwrt
 
 # openwrt - releases
 [ "$(whoami)" = "runner" ] && group "source code"
 git clone --depth=1 https://$github/openwrt/openwrt -b $branch
-
-# immortalwrt master
-git clone https://$github/immortalwrt/packages master/immortalwrt_packages --depth=1
 [ "$(whoami)" = "runner" ] && endgroup
 
 if [ -d openwrt ]; then
@@ -221,28 +222,23 @@ curl -sO $mirror/openwrt/scripts/05-fix-source.sh
 curl -sO $mirror/openwrt/scripts/99_clean_build_cache.sh
 curl -sO $mirror/openwrt/scripts/insert.js
 curl -sO $mirror/openwrt/scripts/1.png
-#curl -sO https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh
+curl -sO $mirror/openwrt/scripts/10-custom.sh
+curl -sO $mirror/openwrt/scripts/11-fix.sh
 
-if [ -n "$git_password" ] && [ -n "$private_url" ]; then
-    curl -u openwrt:$git_password -sO "$private_url"
-else
-    curl -sO $mirror/openwrt/scripts/10-custom.sh
-fi
 chmod 0755 *sh
 [ "$(whoami)" = "runner" ] && group "patching openwrt"
 bash 00-prepare_base.sh
 bash 01-prepare_base-mainline.sh
 bash 02-prepare_package.sh
-#bash add_turboacc.sh
 bash 03-convert_translation.sh
 bash 04-fix_kmod.sh
 bash 05-fix-source.sh
 [ -f "10-custom.sh" ] && bash 10-custom.sh
+[ -f "11-fix.sh" ] && bash 11-fix.sh
 find feeds -type f -name "*.orig" -exec rm -f {} \;
 [ "$(whoami)" = "runner" ] && endgroup
 
-rm -f 0*-*.sh 10-custom.sh
-rm -rf ../master
+rm -f 0*-*.sh 10-custom.sh 11-fix.sh
 
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
@@ -285,6 +281,18 @@ export ENABLE_LTO=$ENABLE_LTO
 # mold
 [ "$ENABLE_MOLD" = "y" ] && echo 'CONFIG_USE_MOLD=y' >> .config
 
+# kernel - CLANG + LTO; Allow CONFIG_KERNEL_CC=clang / clang-18 / clang-xx
+if [ "$KERNEL_CLANG_LTO" = "y" ]; then
+    echo '# Kernel - CLANG LTO' >> .config
+    if [ "$USE_GCC15" = "y" ] || [ "$USE_GCC16" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
+        echo 'CONFIG_KERNEL_CC="ccache clang"' >> .config
+    else
+        echo 'CONFIG_KERNEL_CC="clang"' >> .config
+    fi
+    echo 'CONFIG_EXTRA_OPTIMIZATION=""' >> .config
+    echo '# CONFIG_PACKAGE_kselftests-bpf is not set' >> .config
+fi
+
 # kernel - enable LRNG
 if [ "$ENABLE_LRNG" = "y" ]; then
     echo -e "\n# Kernel - LRNG" >> .config
@@ -300,12 +308,10 @@ if [ "$ENABLE_LOCAL_KMOD" = "y" ]; then
 fi
 
 # gcc config
-if [ "$USE_GCC13" = y ] || [ "$USE_GCC14" = y ] || [ "$USE_GCC15" = y ]; then
-    echo -e "\n# gcc ${gcc_version}" >> .config
-    echo -e "CONFIG_DEVEL=y" >> .config
-    echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
-    echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
-fi
+echo -e "\n# gcc ${gcc_version}" >> .config
+echo -e "CONFIG_DEVEL=y" >> .config
+echo -e "CONFIG_TOOLCHAINOPTS=y" >> .config
+echo -e "CONFIG_GCC_USE_VERSION_${gcc_version}=y\n" >> .config
 
 # uhttpd
 [ "$ENABLE_UHTTPD" = "y" ] && sed -i '/nginx/d' .config && echo 'CONFIG_PACKAGE_ariang=y' >> .config
@@ -317,11 +323,16 @@ fi
 [ "$OPENWRT_CORE" = "y" ] && curl -s $mirror/openwrt/generic/config-wwan >> .config
 
 # ccache
-if [ "$USE_GCC15" = "y" ] && [ "$ENABLE_CCACHE" = "y" ]; then
+if [ "$ENABLE_CCACHE" = "y" ]; then
     echo "CONFIG_CCACHE=y" >> .config
     [ "$(whoami)" = "runner" ] && echo "CONFIG_CCACHE_DIR=\"/builder/.ccache\"" >> .config
     [ "$(whoami)" = "sbwml" ] && echo "CONFIG_CCACHE_DIR=\"/home/sbwml/.ccache\"" >> .config
     tools_suffix="_ccache"
+fi
+
+# ZSTD compression
+if [ "$ENABLE_SquashFS_ZSTD" = "y" ]; then
+    echo "CONFIG_TARGET_ROOTFS_SQUASHFS_ZSTD=y" >> .config
 fi
 
 # Toolchain Cache
@@ -329,7 +340,13 @@ if [ "$BUILD_FAST" = "y" ]; then
     [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
     [ "$isCN" = "CN" ] && github_proxy="" || github_proxy=""
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
-    TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
+    PLATFORM_ID=""
+    [ -f /etc/os-release ] && source /etc/os-release
+    if [ "$PLATFORM_ID" = "platform:el9" ]; then
+        TOOLCHAIN_URL="http://127.0.0.1:8080"
+    else
+        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-25.12
+    fi
     curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst

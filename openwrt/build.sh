@@ -29,7 +29,7 @@ ip_info=`curl -sk https://ip.cooluc.com`;
 [ -n "$ip_info" ] && export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'` || export isCN=US
 
 # script url
-export mirror=https://raw.githubusercontent.com/gitbruc/cooluc/new
+export mirror=https://raw.githubusercontent.com/gitbruc/myopenwrt/new
 
 # private gitea
 export gitea=git.cooluc.com
