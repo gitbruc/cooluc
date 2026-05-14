@@ -154,14 +154,11 @@ print_status "ENABLE_ISTORE"     "$ENABLE_ISTORE"
 print_status "KERNEL_CLANG_LTO"  "$KERNEL_CLANG_LTO" "$GREEN_COLOR" "$YELLOW_COLOR" "\n"
 
 # clean old files
-rm -rf openwrt master
+rm -rf openwrt
 
 # openwrt - releases
 [ "$(whoami)" = "runner" ] && group "source code"
 git clone --depth=1 https://$github/openwrt/openwrt -b $branch
-
-# immortalwrt master
-git clone https://$github/immortalwrt/packages master/immortalwrt_packages --depth=1
 [ "$(whoami)" = "runner" ] && endgroup
 
 if [ -d openwrt ]; then
@@ -242,7 +239,6 @@ find feeds -type f -name "*.orig" -exec rm -f {} \;
 [ "$(whoami)" = "runner" ] && endgroup
 
 rm -f 0*-*.sh 10-custom.sh 11-fix.sh
-rm -rf ../master
 
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
