@@ -21,7 +21,7 @@ curl -s $mirror/openwrt/patch/openwrt-6.x/x86/base-files/etc/board.d/02_network 
 rm -rf package/kernel/linux
 git checkout package/kernel/linux
 pushd package/kernel/linux/modules
-    rm -f fs.mk iio.mk other.mk rtc.mk netsupport.mk
+    rm -f fs.mk other.mk rtc.mk netsupport.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/block.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/bluetooth.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/can.mk
@@ -31,7 +31,7 @@ pushd package/kernel/linux/modules
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/gpio.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/hwmon.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/i2c.mk
-    curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/iio.mk
+    #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/iio.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/input.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/leds.mk
     #curl -Os $mirror/openwrt/patch/openwrt-6.x/modules/lib.mk
