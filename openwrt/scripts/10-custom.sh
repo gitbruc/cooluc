@@ -53,6 +53,8 @@ sed -i 's|"admin", "services"|"admin", "control"|g' "package/new/OpenAppFilter/l
 sed -i 's|admin/services|admin/control|g' "package/new/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/app_filter.htm"
 # nas-samba4
 sed -i 's|admin/services|admin/nas|' "feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+# nas-webdav
+sed -i 's|admin/services/webdav|admin/nas/webdav|g' package/new/luci-app-webdav/root/usr/share/luci/menu.d/luci-app-webdav.json
 # change luci
 perl -pi -e "s/hostname='OpenWrt'/hostname='XiaomanWrt'/g" package/base-files/files/bin/config_generate
 node insert.js
